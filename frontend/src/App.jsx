@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import AuthenticationPage, {action as authAction} from './pages/Authentication';
+import Success from "./pages/Success";
 import Dashboard, {loader as dashLoader} from "./pages/Dashboard";
 import { loaderToken } from './util/auth';
 
@@ -16,6 +17,9 @@ const router = createBrowserRouter([
       { path:'auth',
         element: <AuthenticationPage />,
         action: authAction,
+      },
+      { path: 'auth-success',
+        element: <Success/>
       },
       { path: 'dashboard',
         element: <Dashboard />,

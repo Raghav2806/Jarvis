@@ -9,6 +9,8 @@ export default Dashboard;
 
 export async function loader() {
     const token = getAuthToken();
+    console.log("dash");
+    
     console.log(token);
     if(!token) {
         return redirect('/');
@@ -19,6 +21,7 @@ export async function loader() {
     Authorization: `Bearer ${token}`
     }
     });
+    console.log(response);
     
     if (!response.ok) {
       throw new Response('Unauthorized', { status: 401 });

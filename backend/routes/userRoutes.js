@@ -9,13 +9,14 @@ router.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
 
-router.get('/auth/google/jarvis', passport.authenticate('google', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/'
-}),(req,res) => {
-    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET,{ expiresIn: '1h' });
-    res.json({token});
-});
+router.get('/auth/google/jarvis',
+  passport.authenticate('google', { session: false, failureRedirect: '/' }),
+  (req, res) => {
+    const token = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Redirect to frontend with token in query
+    res.redirect(`http://localhost:5173/auth-success?token=${token}`);
+  }
+);
 
 router.post('/register', serv.register);
 

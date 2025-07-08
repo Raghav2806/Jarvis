@@ -35,8 +35,8 @@ passport.use(
       try {
         const user= await findUserByGoogleId(profile.id)
         if (!user) {
-          await userModel.create({email:profile.email,name:profile.displayName,googleId:profile.id});
-          const newUser= await findUserByEmail(profile.email);
+          await userModel.create({email:profile.emails[0].value,name:profile.displayName,googleId:profile.id});
+          const newUser= await findUserByEmail(profile.emails[0].value);
           return cb(null, newUser);
         } else {
           return cb(null, user);

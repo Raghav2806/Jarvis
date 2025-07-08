@@ -3,6 +3,7 @@ import RootLayout from "./pages/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import AuthenticationPage, {action as authAction} from './pages/Authentication';
 import Success from "./pages/Success";
+import LandingPage from "./pages/LandingPage";
 import Dashboard, {loader as dashLoader} from "./pages/Dashboard";
 import { loaderToken } from './util/auth';
 
@@ -14,6 +15,9 @@ const router = createBrowserRouter([
     id: 'root',
     errorElement: <ErrorPage />,
     children: [
+      { index: true,
+        element: <LandingPage />
+      },
       { path:'auth',
         element: <AuthenticationPage />,
         action: authAction,

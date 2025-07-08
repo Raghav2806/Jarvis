@@ -1,17 +1,15 @@
 import { useLoaderData } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import getAuthToken from "../util/auth.js"
+import Board from "../components/Board.jsx";
 function Dashboard() {
     const data = useLoaderData();
-    return <h1>{data.message}</h1>
+    return <Board/>
 }
 export default Dashboard;
 
 export async function loader() {
     const token = getAuthToken();
-    console.log("dash");
-    
-    console.log(token);
     if(!token) {
         return redirect('/');
     }

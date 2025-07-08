@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import AuthenticationPage, {action as authAction} from './pages/Authentication';
-import Dashboard from "./pages/Dashboard";
-import { checkAuthToken, loaderToken } from './util/auth';
+import Dashboard, {loader as dashLoader} from "./pages/Dashboard";
+import { loaderToken } from './util/auth';
 
 const router = createBrowserRouter([
   {
@@ -13,12 +13,13 @@ const router = createBrowserRouter([
     id: 'root',
     errorElement: <ErrorPage />,
     children: [
-      { index: true, 
+      { path:'auth',
         element: <AuthenticationPage />,
         action: authAction,
       },
-      { index: '/dashboard',
-        element: <Dashboard />
+      { path: 'dashboard',
+        element: <Dashboard />,
+        loader: dashLoader,
       }
     ],
   },

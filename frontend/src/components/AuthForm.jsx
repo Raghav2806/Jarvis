@@ -2,7 +2,6 @@ import {Form, Link, useSearchParams, useActionData} from 'react-router-dom';
 function AuthForm() {
   const [searchParams, setSearchParams] = useSearchParams()
   const isLogin = searchParams.get('mode') === 'login'
-
   const data = useActionData();
   return (
     <>
@@ -28,7 +27,22 @@ function AuthForm() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12">
-            <Form action="#" method="POST" className="space-y-6">
+            <Form method="POST" className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                  Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Email address
@@ -61,21 +75,20 @@ function AuthForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end">
-                <div className="text-sm/6">
-                  <Link to="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
+              <div className="flex items-center justify-between">
+                <div className="flex gap-3">
+                  <Link to={`?mode=${isLogin ? 'register' : 'login'}`} className="block text-sm/6 text-gray-900 hover:text-indigo-600">
+                    {isLogin ? 'Sign Up' : 'Login'}
                   </Link>
                 </div>
-              </div>
 
+                <div className="text-sm/6">
+                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
               <div>
-                <Link 
-                    to={`?mode=${isLogin ? 'signup' : 'login'}`} 
-                    className="flex w-full justify-center mb-2 rounded-md bg-white px-2 py-1.5 text-sm/6 font-semibold text-indigo-600 border-indigo-600 border-2 shadow-xs hover:bg-indigo-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    {isLogin ? 'Sign Up' : 'Login'}
-                </Link>
                 <button 
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -96,7 +109,7 @@ function AuthForm() {
 
               <div className="mt-6 grid grid-cols-1">
                 <a
-                  href="#"
+                  href="/auth/google"
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">

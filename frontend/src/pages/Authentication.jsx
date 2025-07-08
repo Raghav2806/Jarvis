@@ -9,18 +9,22 @@ export default AuthenticationPage;
 
 export async function action({request}) {
   const searchParams = new URL(request.url).searchParams;
-  const mode = searchParams.get('mode') || 'login'
-
-  if(mode !== 'login' && mode !== 'signup') {
-    throw ({message:'unsupported mode'},{status: 422});
+  const mode = searchParams.get('mode')
+  console.log(mode);
+  
+  if(mode !== 'login' && mode !== 'register') {
+    throw new Response(JSON.stringify({ message: 'Unsupported mode' }), {
+    status: 422
+    });
   }
 
   const data = await request.formData();
   const authData = {
     email: data.get('email'),
-    password: data.get('password')
+    password: data.get('password'),
+    name: data.get('name'),
   };
-
+  
   const response = await fetch('http://localhost:3000/' + mode, {
     method: 'POST',
     headers: {
@@ -40,7 +44,6 @@ export async function action({request}) {
   //manage token
   const resData = await response.json();
   const token = resData.token;
-
   localStorage.setItem('token', token);
   const expiration = new Date();
   expiration.setHours(expiration.getHours() + 1);

@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import passport from "passport";
+import './config/passportConfig.js';
 import cors from "cors";
 import { router } from "./routes/userRoutes.js";
 import * as dotenv from "dotenv";
@@ -26,8 +28,10 @@ app.use((req, res, next) => {
   );
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
+app.use(passport.initialize());
 
 app.use("/", router);
 

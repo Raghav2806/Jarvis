@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -8,13 +9,12 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Dashboard', href: '/dashboard'},
+  { name: 'Add Transaction', href: '#'},
+  { name: 'Manage Payment Methods', href: '#'},
+  { name: 'Calendar', href: '#'},
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
 
@@ -22,7 +22,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Board() {
+export default function NavBar() {
+    const [currentPage, setCurrentPage] = useState('Dashboard')
   return (
     <>
       {/*
@@ -55,9 +56,10 @@ export default function Board() {
                     <a
                       key={item.name}
                       href={item.href}
-                      aria-current={item.current ? 'page' : undefined}
+                      onClick={() => setCurrentPage(item.name)}
+                      aria-current={currentPage === item.name ? 'page' : undefined}
                       className={classNames(
-                        item.current
+                        currentPage === item.name
                           ? 'border-indigo-500 text-gray-900'
                           : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                         'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
@@ -168,17 +170,6 @@ export default function Board() {
             </div>
           </DisclosurePanel>
         </Disclosure>
-
-        <div className="py-10">
-          <header>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-            </div>
-          </header>
-          <main>
-            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">{/* Your content */}</div>
-          </main>
-        </div>
       </div>
     </>
   )

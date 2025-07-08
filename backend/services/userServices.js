@@ -14,7 +14,7 @@ export async function registerUser(userData) {
       return jwt.sign({ email: userData.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     }
   } catch (err) {
-    throw new Error("Unable to register!");
+    throw err;
   }
 }
 
@@ -33,6 +33,6 @@ export async function loginUser(userData) {
             return jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     }
     } catch (err) {
-      console.log(err);
+      throw err;
     }
 }

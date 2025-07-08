@@ -4,13 +4,13 @@ import { useState } from 'react'
 import { Dialog, Disclosure } from '@headlessui/react'
 import { Bars3Icon, MinusSmallIcon, PlusSmallIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import {
-  ArrowPathIcon,
   CheckIcon,
-  CloudArrowUpIcon,
-  Cog6ToothIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-  ServerIcon,
+  BellIcon,
+  CurrencyDollarIcon,
+  ChartBarIcon,
+  TagIcon,
+  HomeIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/20/solid'
 
 const navigation = [
@@ -21,70 +21,100 @@ const navigation = [
 ]
 const features = [
   {
-    name: 'Push to deploy.',
-    description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-    icon: CloudArrowUpIcon,
+    name: 'Smart reminders',
+    description: 'Get notified before any subscription renews. No more surprise charges.',
+    icon: BellIcon,
   },
   {
-    name: 'SSL certificates.',
-    description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-    icon: LockClosedIcon,
+    name: 'Manual expense tracking',
+    description: 'Easily log daily expenses and categorize them with a few clicks.',
+    icon: CurrencyDollarIcon,
   },
   {
-    name: 'Simple queues.',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus.',
-    icon: ArrowPathIcon,
+    name: 'Monthly summaries',
+    description: 'Visualize your income, spending, and recurring charges at a glance.',
+    icon: ChartBarIcon,
   },
   {
-    name: 'Advanced security.',
-    description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-    icon: FingerPrintIcon,
+    name: 'Custom tags',
+    description: 'Label expenses with tags like groceries, rent, or travel to stay organized.',
+    icon: TagIcon,
   },
   {
-    name: 'Powerful API.',
-    description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-    icon: Cog6ToothIcon,
+    name: 'Dashboard overview',
+    description: 'View upcoming bills, spending breakdown, and your cash flow trend in one place.',
+    icon: HomeIcon,
   },
   {
-    name: 'Database backups.',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. ',
-    icon: ServerIcon,
+    name: 'Privacy-first',
+    description: 'Your data stays on your device. No bank connections or data sharing.',
+    icon: ShieldCheckIcon,
   },
 ]
 const tiers = [
   {
-    name: 'Hobby',
-    id: 'tier-hobby',
+    name: 'Free',
+    id: 'tier-free',
     href: '#',
-    priceMonthly: '$19',
-    description: "The perfect plan if you're just getting started with our product.",
-    features: ['25 products', 'Up to 10,000 subscribers', 'Advanced analytics', '24-hour support response time'],
+    priceMonthly: '$0',
+    description: 'Everything you need to start tracking your subscriptions and expenses.',
+    features: [
+      'Track up to 10 subscriptions',
+      'Add unlimited expense logs',
+      'Smart renewal reminders',
+      'Monthly overview dashboard',
+      'Tag-based organization',
+    ],
     featured: false,
   },
   {
-    name: 'Enterprise',
-    id: 'tier-enterprise',
+    name: 'Pro',
+    id: 'tier-pro',
     href: '#',
-    priceMonthly: '$49',
-    description: 'Dedicated support and infrastructure for your company.',
+    priceMonthly: '$4.99',
+    description: 'Extra power and flexibility for managing complex or recurring finances.',
     features: [
-      'Unlimited products',
-      'Unlimited subscribers',
-      'Advanced analytics',
-      'Dedicated support representative',
-      'Marketing automations',
-      'Custom integrations',
+      'Unlimited subscriptions',
+      'Custom category rules',
+      'Daily backup & export',
+      'Priority reminder emails',
+      'Early access to new features',
+      'Support in under 12 hours',
     ],
     featured: true,
   },
 ]
 const faqs = [
   {
-    question: "What's the best thing about Switzerland?",
+    question: "Is this app completely free?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Yes, the core features are free. We may introduce a Pro version with extra features later.",
   },
-  // More questions...
+  {
+    question: "Do I need to connect my bank account?",
+    answer:
+      "No. You manually add subscriptions and expenses. This keeps your data private and secure.",
+  },
+  {
+    question: "Will I get reminders before renewal dates?",
+    answer:
+      "Yes. You’ll get timely email reminders before any recurring charge hits.",
+  },
+  {
+    question: "Can I track other expenses too?",
+    answer:
+      "Absolutely. You can add one-time or recurring expenses and tag them for easy organization.",
+  },
+  {
+    question: "Is my data synced across devices?",
+    answer:
+      "Currently, your data is stored securely in the cloud and accessible when you log in.",
+  },
+  {
+    question: "What happens if I miss a payment reminder?",
+    answer:
+      "You’ll still see it on your dashboard, and we’ll nudge you with a follow-up email.",
+  },
 ]
 const footerNavigation = {
   solutions: [
@@ -238,15 +268,14 @@ export default function Landing() {
               </div>
               <div className="text-center">
                 <h1 className="text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-                  Data to enrich your online business
+                  Know what you're paying for
                 </h1>
                 <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt
-                  amet fugiat veniam occaecat.
+                  Log expenses, track subscriptions, and stop forgetting renewals.
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <a
-                    href="#"
+                    href="/auth?mode=register"
                     className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                   >
                     Get started
@@ -317,11 +346,10 @@ export default function Landing() {
             <div className="mx-auto max-w-2xl sm:text-center">
               <h2 className="text-base/7 font-semibold text-indigo-600">Everything you need</h2>
               <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl sm:text-balance">
-                No server? No problem.
+                Stay on top of your subscriptions and spending
               </p>
               <p className="mt-6 text-lg/8 text-gray-600">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque,
-                iste dolor cupiditate blanditiis.
+                A smart, no-fuss tracker for your recurring bills and daily expenses — simple, secure, and built just for you.
               </p>
             </div>
           </div>

@@ -10,7 +10,6 @@ export default AuthenticationPage;
 export async function action({request}) {
   const searchParams = new URL(request.url).searchParams;
   const mode = searchParams.get('mode')
-  console.log(mode);
   
   if(mode !== 'login' && mode !== 'register') {
     throw new Response(JSON.stringify({ message: 'Unsupported mode' }), {
@@ -32,13 +31,16 @@ export async function action({request}) {
     },
     body: JSON.stringify(authData)
   })
-
+  
   if(response.status === 422 || response.status === 401) {
     return response;
   }
 
   if(!response.ok) {
-    throw ({message: 'Could not authenticate users'}, {status: 500})
+      const data = await response.json();
+      throw new Response(JSON.stringify({ message: data.message }), {
+          status: response.status
+      });
   }
 
   //manage token

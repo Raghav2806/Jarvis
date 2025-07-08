@@ -28,7 +28,7 @@ function AuthForm() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12">
             <Form method="POST" className="space-y-6">
-              <div>
+              {!isLogin ? <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Name
                 </label>
@@ -41,7 +41,8 @@ function AuthForm() {
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
-              </div>
+              </div> : <></>
+              }
 
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">

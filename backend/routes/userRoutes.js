@@ -31,3 +31,5 @@ router.get(
         })
     }
 )
+
+router.post('/addmethod/:method',serv.addMethod)

@@ -1,12 +1,12 @@
-import { useState, navigate } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard'},
   { name: 'Add Transaction', href: '#'},
-  { name: 'Manage Payment Methods', href: '#'},
+  { name: 'Manage Payment Methods', href: '/manage'},
   { name: 'Calendar', href: '#'},
 ]
 const userNavigation = [
@@ -18,7 +18,9 @@ function classNames(...classes) {
 }
 
 export default function NavBar({user}) {
-    const [currentPage, setCurrentPage] = useState('Dashboard')
+    const location=useLocation();
+    const baseRoute = location.pathname.split("/")[1];
+    const [currentPage, setCurrentPage] = useState('/'+baseRoute)
     const navigate = useNavigate();
     const handleLogout = () => {
       localStorage.removeItem('token');
@@ -54,20 +56,20 @@ export default function NavBar({user}) {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
-                      onClick={() => setCurrentPage(item.name)}
-                      aria-current={currentPage === item.name ? 'page' : undefined}
+                      to={item.href}
+                      onClick={() => setCurrentPage(item.href)}
+                      aria-current={currentPage === item.href ? 'page' : undefined}
                       className={classNames(
-                        currentPage === item.name
+                        currentPage === item.href
                           ? 'border-indigo-500 text-gray-900'
                           : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                         'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
                       )}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>

@@ -22,7 +22,6 @@ export async function action({request}) {
     email: data.get('email'),
     password: data.get('password'),
     name: data.get('name'),
-    imageUrl: data.get('file-upload')
   };
   
   const response = await fetch('http://localhost:3000/' + mode, {

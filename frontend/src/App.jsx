@@ -5,6 +5,8 @@ import AuthenticationPage, {action as authAction} from './pages/Authentication';
 import Success from "./pages/Success";
 import LandingPage from "./pages/LandingPage";
 import Dashboard, {loader as dashLoader} from "./pages/Dashboard";
+import MethodDetails, {loader as methodLoader} from "./pages/MethodDetails";
+import PaymentForm, {action as pformAction, loader as pformLoader} from "./pages/PaymentForm";
 import { loaderToken } from './util/auth';
 
 const router = createBrowserRouter([
@@ -28,7 +30,25 @@ const router = createBrowserRouter([
       { path: 'dashboard',
         element: <Dashboard />,
         loader: dashLoader,
-      }
+      },
+      {
+        path: 'manage',
+        children: [
+          {
+            index:true,
+            element: <MethodDetails/>,
+            loader: methodLoader,
+          },
+          {
+            path: ':method',
+            element: <PaymentForm/>,
+            loader: pformLoader,
+            action: pformAction,
+            
+          }
+        ],
+        
+      },
     ],
   },
 ]);

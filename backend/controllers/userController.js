@@ -27,3 +27,16 @@ export async function login(req, res, next) {
     next(ApiError.badRequest(err.message));
   }
 }
+
+export async function addMethod(req, res, next) {
+  try {
+    const method = req.params.method;
+    console.log(method);
+    console.log(req.body);
+    res
+      .status(201)
+      .json({ message: 'Method added.'});
+  } catch (err) {
+    next(ApiError.badRequest(err.message));
+  }
+}

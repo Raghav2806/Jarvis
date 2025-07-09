@@ -5,6 +5,15 @@ const userSchema = new mongoose.Schema({
     password: {type: String},
     name: {type: String},
     googleId: {type: String},
+    imageUrl: {
+      type: String,
+      validate: {
+        validator: function(v) {
+          return /^https?:\/\/.+/.test(v);
+        },
+        message: props => `${props.value} is not a valid image URL!`
+      }
+    },
     creditCards: [{
       name: String,      // e.g., "HDFC Regalia"
       last4: String,     // Optional: "1234"

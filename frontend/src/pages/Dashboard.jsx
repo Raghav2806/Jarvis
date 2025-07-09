@@ -6,7 +6,7 @@ function Dashboard() {
     const data = useLoaderData();
     return (
         <>
-            <NavBar/>
+            <NavBar user={data.user}/>
             <div className="py-10">
                 <header>
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -1,13 +1,8 @@
-import { useState } from 'react'
+import { useState, navigate } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'Dashboard', href: '/dashboard'},
   { name: 'Add Transaction', href: '#'},
@@ -15,15 +10,21 @@ const navigation = [
   { name: 'Calendar', href: '#'},
 ]
 const userNavigation = [
-  { name: 'Sign out', href: '#' },
+  { name: 'Sign out'},
 ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function NavBar() {
+export default function NavBar({user}) {
     const [currentPage, setCurrentPage] = useState('Dashboard')
+    const navigate = useNavigate();
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiration');
+      navigate('/');
+    };
   return (
     <>
       {/*
@@ -71,14 +72,7 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="size-6" />
-                </button>
+                <p className='relative text-gray-900 px-1 pt-1 text-sm font-medium'>Hi {user.name}</p>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -86,7 +80,7 @@ export default function NavBar() {
                     <MenuButton className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
+                      <img alt="" src={user.imageUrl?user.imageUrl:"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"} className="size-8 rounded-full" />
                     </MenuButton>
                   </div>
                   <MenuItems
@@ -95,12 +89,12 @@ export default function NavBar() {
                   >
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>
-                        <a
-                          href={item.href}
+                        <button
+                          onClick={handleLogout}
                           className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                         >
                           {item.name}
-                        </a>
+                        </button>
                       </MenuItem>
                     ))}
                   </MenuItems>

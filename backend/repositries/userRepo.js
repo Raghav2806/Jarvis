@@ -13,7 +13,7 @@ export async function findUserByGoogleId (id) {
 
 export async function createUser (userData) {
     const hash=await bcrypt.hash(userData.password, saltRounds);
-    const newUser= await userModel.create({email:userData.email, password:hash, name:userData.name});
+    const newUser= await userModel.create({email:userData.email, name:userData.name,password:hash});
     if(!newUser){
       throw new Error("User creation failed");
     }

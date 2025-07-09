@@ -13,7 +13,6 @@ router.get('/auth/google/jarvis',
   passport.authenticate('google', { session: false, failureRedirect: '/' }),
   (req, res) => {
     const token = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // Redirect to frontend with token in query
     res.redirect(`http://localhost:5173/auth-success?token=${token}`);
   }
 );
@@ -26,6 +25,9 @@ router.get(
     "/dashboard", 
     passport.authenticate('jwt', {session: false}),
     (req,res) => {
-        res.json({message:"Welcome"})
+        res.json({
+          message:"Welcome",
+          user: req.user,
+        })
     }
 )

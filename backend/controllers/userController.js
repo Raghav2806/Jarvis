@@ -4,7 +4,8 @@ import {
     addCard,
     addUpi,
     addBank,
-    getMethodDetails
+    getMethodDetails,
+    updateMethodDetails
 } from "../services/userServices.js";
 import { ApiError } from "../errors/ApiError.js";
 import * as dotenv from "dotenv";
@@ -61,11 +62,21 @@ export async function getMethod(req, res, next) {
     const id=req.params.id;
     const email=req.query.email;
     const details = await getMethodDetails(email,id)
-    console.log(details);
     
     res
       .status(201)
       .json(details);
+  } catch (err) {
+    next(ApiError.badRequest(err.message));
+  }
+}
+
+export async function editMethod(req, res, next) {
+  try {
+    await updateMethodDetails(req.body)
+    res
+      .status(201)
+      .json({ message: 'Method updated.'});
   } catch (err) {
     next(ApiError.badRequest(err.message));
   }

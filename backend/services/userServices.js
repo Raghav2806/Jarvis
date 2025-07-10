@@ -1,4 +1,17 @@
-import {findUserByEmail, createUser, searchCard, addingCard, searchUpi, addingUpi, searchBank, addingBank, getMethodFromId} from "../repositries/userRepo.js"
+import {
+  findUserByEmail, 
+  createUser, 
+  searchCard, 
+  addingCard, 
+  searchUpi, 
+  addingUpi, 
+  searchBank, 
+  addingBank, 
+  getMethodFromId,
+  updateCard,
+  updateBank,
+  updateUpi
+} from "../repositries/userRepo.js"
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
@@ -89,5 +102,31 @@ export async function getMethodDetails(email,id) {
     }
   } catch (err) {
     throw err;
+  }
+}
+
+export async function updateMethodDetails(newData) {
+  try{
+    const existingUser = await findUserByEmail(newData.email);
+    if(existingUser) {
+      const method=newData.method;
+      switch (method) {
+            case 'card':
+              await updateCard(newData);
+              break;
+            case 'bank':
+              await updateBank(newData);
+              break;
+            case 'upi':
+              await updateUpi(newData);
+              break;
+            default:
+              throw new Error("Invalid payment method");
+          }
+    } else {
+      throw new Error("User not Found")
+    }
+  } catch(err) {
+    throw err
   }
 }

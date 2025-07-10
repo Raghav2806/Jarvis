@@ -77,3 +77,44 @@ export async function getMethodFromId(user,id) {
     }
     throw new Error ('Could not find the method')
 }
+
+export async function updateCard (cardData) {
+    const user=await findUserByEmail(cardData.email)
+    const card = user.creditCards.find(card => card._id.toString() === cardData.id)
+    if(card){
+    card.name=cardData.name;
+    card.lastFour=cardData.lastFour;
+    card.provider=cardData.provider;
+    await user.save();
+    return
+    } else {
+        throw new Error("Can't find card");
+    }
+}
+
+export async function updateBank (cardData) {
+    const user=await findUserByEmail(cardData.email)
+    const card = user.bankAccounts.find(card => card._id.toString() === cardData.id)
+    if(card){
+    card.bankName=cardData.bankName;
+    card.bankMethod=cardData.bankMethod;
+    card.accountType=cardData.accountType;
+    await user.save();
+    return
+    } else {
+        throw new Error("Can't find bank");
+    }
+}
+
+export async function updateUpi (cardData) {
+    const user=await findUserByEmail(cardData.email)
+    const card = user.bankAccounts.find(card => card._id.toString() === cardData.id)
+    if(card){
+    card.name=cardData.name;
+    card.upi=cardData.upi;
+    await user.save();
+    return
+    } else {
+        throw new Error("Can't find upi");
+    }
+}

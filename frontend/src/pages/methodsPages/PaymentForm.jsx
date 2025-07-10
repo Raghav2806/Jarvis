@@ -21,7 +21,7 @@ export async function action({ request, params }) {
       status: 422,
     });
   }
-  const userData = await authLoader("/dashboard");
+  const userData = await authLoader();
   const data = await request.formData();
   const methodData = {
     email: userData.user.email,

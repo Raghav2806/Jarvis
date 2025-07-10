@@ -1,4 +1,4 @@
-import {findUserByEmail, createUser, searchCard, addingCard, searchUpi, addingUpi, searchBank, addingBank} from "../repositries/userRepo.js"
+import {findUserByEmail, createUser, searchCard, addingCard, searchUpi, addingUpi, searchBank, addingBank, getMethodFromId} from "../repositries/userRepo.js"
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
@@ -73,6 +73,19 @@ export async function addBank(methodData) {
       throw new Error("This bank has already been added by you")
     } else {
       await addingBank(email,bankMethod,bankName,accountType)
+    }
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getMethodDetails(email,id) {
+  try {
+    const existingUser = await findUserByEmail(email);
+    if(existingUser) {
+      return await getMethodFromId(existingUser,id)
+    } else {
+      throw new Error("User not Found")
     }
   } catch (err) {
     throw err;

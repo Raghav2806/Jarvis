@@ -54,9 +54,9 @@ export default function BankTable({banks}) {
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{bank.bankMethod}</td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{bank.accountType}</td>
                       <td className="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                        <Link to={`edit/${bank._id}`} className="text-indigo-600 hover:text-indigo-900">
                           Edit<span className="sr-only">, {bank.bankName}</span>
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   ))}

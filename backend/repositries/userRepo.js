@@ -61,3 +61,19 @@ export async function addingBank (email,bankMethod,bankName,accountType) {
     user.bankAccounts.push({bankMethod:bankMethod,bankName:bankName,accountType:accountType});
     await user.save();
 }
+
+export async function getMethodFromId(user,id) {
+    const card = user.creditCards.find(card => card._id.toString() === id)
+    if(card) {
+        return {detail:card, method:'card'}
+    }
+    const bank = user.bankAccounts.find(card => card._id.toString() === id)
+    if(bank) {
+        return {detail:bank, method:'bank'}
+    }
+    const upi = user.upiIds.find(card => card._id.toString() === id)
+    if(upi) {
+        return {detail:upi, method:'upi'}
+    }
+    throw new Error ('Could not find the method')
+}

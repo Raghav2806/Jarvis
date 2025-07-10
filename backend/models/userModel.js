@@ -15,18 +15,18 @@ const userSchema = new mongoose.Schema({
       }
     },
     creditCards: [{
-      name: String,      // e.g., "HDFC Regalia"
-      lastFour: {type: String},     // Optional: "1234"
-      provider: String,  // e.g., "Visa", "Mastercard"
+      name: String,     
+      lastFour: {type: String},     
+      provider: String,  
     }],
     bankAccounts: [{
       bankMethod: {type: String, enum:['Netbanking','Cheque','ECS','NEFT/RTGS/IMPS','Other']},
-      bankName: String,  // Optional: "ICICI"
-      accountType: String, // Optional: "Savings", "Current"
+      bankName: String,  
+      accountType: String, 
     }],
     upiIds: [{
-      name: String,      // e.g., "GPay Personal"
-      upi: String        // Optional: yourname@okhdfcbank
+      name: String,      
+      upi: String        
     }]
 });
 

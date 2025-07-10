@@ -48,11 +48,11 @@ export async function addingUpi (email,name,upi) {
     await user.save();
 }
 
-export async function searchBank (email,bankName) {
+export async function searchBank (email,bankName, bankMethod) {
     const user=await findUserByEmail(email);
     if(!user) throw new Error("User not found");
-    const bank = user.bankAccounts.find(bank => bank.bankName === bankName)
-    return bank || null
+    const match = user.bankAccounts.find(bank => bank.bankName === bankName && bank.bankMethod === bankMethod)
+    return match || null
 }
 
 export async function addingBank (email,bankMethod,bankName,accountType) {

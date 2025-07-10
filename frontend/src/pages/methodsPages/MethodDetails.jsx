@@ -1,32 +1,24 @@
 import { useLoaderData, Link } from "react-router-dom";
 import authLoader from "../../util/authLoader.js";
 import NavBar from "../../components/commonComponents/NavBar.jsx";
+import CardTable from "../../components/methodsComponents/CardTable.jsx";
+import BankTable from "../../components/methodsComponents/BankTable.jsx";
+import UpiTable from "../../components/methodsComponents/UpiTable.jsx";
+import Wrapper from "../../components/commonComponents/Wrapper.jsx";
 
 export default function MethodDetails() {
   const data = useLoaderData();
+  const user=data.user;
   return (
     <>
-      <NavBar user={data.user} />
-      <div className="flex justify-center gap-3 mx-auto">
-        <Link
-          className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-          to={"card"}
-        >
-          Card
-        </Link>
-        <Link
-          className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-          to={"bank"}
-        >
-          Bank
-        </Link>
-        <Link
-          className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-          to={"upi"}
-        >
-          UPI
-        </Link>
-      </div>
+      <NavBar user={user} />
+      <Wrapper title={'Manage Payment Methods'}>
+      <CardTable cards={user.creditCards}/>
+      <hr className="w-7/8 my-6 mx-auto border-t-2 border-indigo-500" />
+      <BankTable banks={user.bankAccounts}/>
+      <hr className="w-7/8 my-6 mx-auto border-t-2 border-indigo-500" />
+      <UpiTable upis={user.upiIds}/>
+      </Wrapper>
     </>
   );
 }

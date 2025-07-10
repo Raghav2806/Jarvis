@@ -68,8 +68,8 @@ export async function addUpi(methodData) {
 export async function addBank(methodData) {
   try {
     const {email,bankMethod,bankName,accountType}=methodData;
-    const existingCard=await searchBank(email,bankName);
-    if(existingCard) {
+    const existingBank=await searchBank(email,bankName,bankMethod);
+    if(existingBank) {
       throw new Error("This bank has already been added by you")
     } else {
       await addingBank(email,bankMethod,bankName,accountType)

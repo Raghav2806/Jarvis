@@ -13,6 +13,7 @@ import PaymentForm, {
 } from "./pages/methodsPages/PaymentForm";
 import EditMethod, {
   loader as eFormLoader,
+  action as eFormAction
 } from "./pages/methodsPages/EditMethod";
 import authLoader from "./util/authLoader";
 import { loaderToken } from "./util/auth";
@@ -46,7 +47,8 @@ const router = createBrowserRouter([
           {
             path: "edit/:id",
             element: <EditMethod/>,
-            loader: eFormLoader
+            loader: eFormLoader,
+            action: eFormAction
           }
         ],
       },

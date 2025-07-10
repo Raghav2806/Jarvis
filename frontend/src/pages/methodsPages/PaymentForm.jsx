@@ -33,7 +33,7 @@ export async function action({ request, params }) {
     provider: data.get("provider"),
     accountType: data.get("accountType"),
   };
-
+  
   const response = await fetch("http://localhost:3000/addmethod/" + method, {
     method: "POST",
     headers: {

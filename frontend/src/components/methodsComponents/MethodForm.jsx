@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Form, useParams } from "react-router-dom";
 import Dropdown from "../commonComponents/Dropdown";
 
 export default function MethodForm() {
   const options = ["Netbanking", "Cheque", "ECS", "NEFT/RTGS/IMPS", "Other"];
+  const [selected, setSelected]=useState('');
   const { method } = useParams();
   function formatTitle(method) {
     if (method == "upi") return "UPI";
@@ -27,7 +29,7 @@ export default function MethodForm() {
                 {method == "bank" ? "Method" : formatTitle(method)} Name
               </label>
               {method == "bank" ? (
-                <Dropdown options={options} />
+                <Dropdown options={options} selected={selected} setSelected={setSelected}/>
               ) : (
                 <div className="mt-2.5">
                   <input

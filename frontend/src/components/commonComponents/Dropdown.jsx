@@ -1,7 +1,5 @@
-import { useState } from "react"
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
-export default function Dropdown({options}) {
-    const [selected, setSelected]=useState('');
+export default function Dropdown({options, selected, setSelected}) {
     function handleChange(e){
         setSelected(e.target.value);
     }

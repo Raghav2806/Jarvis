@@ -1,7 +1,8 @@
 import { Form, Link, useParams } from 'react-router-dom'
-
+import Dropdown from './Dropdown';
 
 export default function MethodForm() {
+    const options=['Netbanking','Cheque','ECS','NEFT/RTGS/IMPS','Other'];
     const {method}=useParams();
     function formatTitle(method) {
         if(method=='upi') return 'UPI';
@@ -19,14 +20,16 @@ export default function MethodForm() {
             <label className="block text-sm/6 font-semibold text-gray-900">
               {(method == 'bank')?'Method':formatTitle(method)} Name
             </label>
-            <div className="mt-2.5">
+            {(method == 'bank')?
+            <Dropdown options={options}/>
+            :<div className="mt-2.5">
               <input
                 name="name"
                 type="text"
-                placeholder={(method == 'card')?'HDFC Regalia':(method == 'bank')?'ICICI NetBanking':'GPay'}
+                placeholder={(method == 'card')?'HDFC Regalia':'GPay'}
                 className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
               />
-            </div>
+            </div>}
           </div>
           <div>
             <label className="block text-sm/6 font-semibold text-gray-900">

@@ -24,16 +24,19 @@ export async function action({request,params}) {
         status: 422
         });
     }
+    const userData = await authLoader("/dashboard");
     const data = await request.formData();
     const methodData={
+        email: userData.user.email,
         name: data.get('name'),
         lastFour: data.get('lastFour'),
+        bankMethod: data.get('bankMethod'),
         bankName: data.get('bankName'),
         upi: data.get('upi'),
         provider: data.get('provider'),
         accountType: data.get('accountType')
     }
-
+    
     const response = await fetch('http://localhost:3000/addmethod/' + method, {
         method: 'POST',
         headers: {

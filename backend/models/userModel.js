@@ -16,11 +16,11 @@ const userSchema = new mongoose.Schema({
     },
     creditCards: [{
       name: String,      // e.g., "HDFC Regalia"
-      last4: String,     // Optional: "1234"
+      lastFour: {type: String},     // Optional: "1234"
       provider: String,  // e.g., "Visa", "Mastercard"
     }],
     bankAccounts: [{
-      name: String,      // e.g., "ICICI NetBanking"
+      bankMethod: {type: String, enum:['Netbanking','Cheque','ECS','NEFT/RTGS/IMPS','Other']},
       bankName: String,  // Optional: "ICICI"
       accountType: String, // Optional: "Savings", "Current"
     }],

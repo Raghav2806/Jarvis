@@ -1,6 +1,9 @@
 import {
     registerUser,
-    loginUser
+    loginUser,
+    addCard,
+    addUpi,
+    addBank
 } from "../services/userServices.js";
 import { ApiError } from "../errors/ApiError.js";
 import * as dotenv from "dotenv";
@@ -31,8 +34,19 @@ export async function login(req, res, next) {
 export async function addMethod(req, res, next) {
   try {
     const method = req.params.method;
-    console.log(method);
-    console.log(req.body);
+    switch (method) {
+      case 'card':
+        await addCard(req.body);
+        break;
+      case 'bank':
+        await addBank(req.body);
+        break;
+      case 'upi':
+        await addUpi(req.body);
+        break;
+      default:
+        throw new Error("Invalid payment method");
+    }
     res
       .status(201)
       .json({ message: 'Method added.'});

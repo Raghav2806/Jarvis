@@ -1,13 +1,14 @@
 import {Link} from 'react-router-dom'
 
 export default function UpiTable({upis}) {
+    const len=upis.length;
   return (
     <div className="px-4 sm:px-6 lg:px-8 mt-4 mb-4">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold text-gray-900">UPI Accounts</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            A list of all the upi accounts.
+          <p className={`mt-2 text-sm ${len?'text-gray-700':'text-red-700'}`}>
+            {len?'A list of all the upi accounts.':'Please add your upi accounts'}
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -19,7 +20,7 @@ export default function UpiTable({upis}) {
           </Link>
         </div>
       </div>
-      <div className="mt-8 flow-root">
+      {len?<div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg">
@@ -60,7 +61,7 @@ export default function UpiTable({upis}) {
             </div>
           </div>
         </div>
-      </div>
+      </div>:<></>}
     </div>
   )
 }

@@ -6,14 +6,13 @@ import AuthenticationPage, {
 } from "./pages/authPages/Authentication";
 import Success from "./pages/authPages/Success";
 import LandingPage from "./pages/commonPages/LandingPage";
-import Dashboard, { loader as dashLoader } from "./pages/Dashboard";
-import MethodDetails, {
-  loader as methodLoader,
-} from "./pages/methodsPages/MethodDetails";
+import Dashboard from "./pages/Dashboard";
+import MethodDetails from "./pages/methodsPages/MethodDetails";
 import PaymentForm, {
   action as pformAction,
-  loader as pformLoader,
 } from "./pages/methodsPages/PaymentForm";
+import EditMethod from "./pages/methodsPages/EditMethod";
+import authLoader from "./util/authLoader";
 import { loaderToken } from "./util/auth";
 
 const router = createBrowserRouter([
@@ -27,21 +26,25 @@ const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       { path: "auth", element: <AuthenticationPage />, action: authAction },
       { path: "auth-success", element: <Success /> },
-      { path: "dashboard", element: <Dashboard />, loader: dashLoader },
+      { path: "dashboard", element: <Dashboard />, loader: authLoader },
       {
         path: "manage",
         children: [
           {
             index: true,
             element: <MethodDetails />,
-            loader: methodLoader,
+            loader: authLoader,
           },
           {
             path: ":method",
             element: <PaymentForm />,
-            loader: pformLoader,
+            loader: authLoader,
             action: pformAction,
           },
+          {
+            path: "edit/:id",
+            element: <EditMethod/>
+          }
         ],
       },
     ],

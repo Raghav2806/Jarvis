@@ -14,15 +14,12 @@ export default function MethodDetails() {
       <NavBar user={user} />
       <Wrapper title={'Manage Payment Methods'}>
       <CardTable cards={user.creditCards}/>
-      <hr className="w-7/8 my-6 mx-auto border-t-2 border-indigo-500" />
+      <hr className="w-5/7 my-6 mx-auto border-t border-indigo-500" />
       <BankTable banks={user.bankAccounts}/>
-      <hr className="w-7/8 my-6 mx-auto border-t-2 border-indigo-500" />
+      <hr className="w-5/7 my-6 mx-auto border-t border-indigo-500" />
       <UpiTable upis={user.upiIds}/>
       </Wrapper>
     </>
   );
 }
 
-export async function loader() {
-  return await authLoader("/dashboard");
-}

@@ -14,7 +14,3 @@ function Dashboard() {
         )
 }
 export default Dashboard;
-
-export async function loader() {
-    return await authLoader("/dashboard");
-}

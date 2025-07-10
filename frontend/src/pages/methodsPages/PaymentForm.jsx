@@ -13,9 +13,6 @@ export default function PaymentForm() {
   );
 }
 
-export async function loader() {
-  return await authLoader("/dashboard");
-}
 
 export async function action({ request, params }) {
   const method = params.method;

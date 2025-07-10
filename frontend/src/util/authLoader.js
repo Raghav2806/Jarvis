@@ -1,13 +1,13 @@
 import getAuthToken from "./auth";
 import { redirect } from "react-router-dom";
 
-export default async function authLoader(requestUrl) {
+export default async function authLoader() {
     const token = getAuthToken();
     if(!token) {
         return redirect('/');
     }
 
-    const response = await fetch('http://localhost:3000'+requestUrl, {
+    const response = await fetch('http://localhost:3000/dashboard', {
     headers: {
     Authorization: `Bearer ${token}`
     }

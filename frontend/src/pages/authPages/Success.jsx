@@ -1,4 +1,4 @@
-import AuthSuccess from "../components/AuthSuccess";
+import AuthSuccess from "../../components/authComponents/AuthSuccess";
 
 function Success () {
     return <AuthSuccess/>

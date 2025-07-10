@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import authLoader from "../util/authLoader.js";
-import NavBar from "../components/NavBar.jsx";
+import NavBar from "../components/commonComponents/NavBar.jsx";
 function Dashboard() {
     const data = useLoaderData();
     return (

@@ -1,5 +1,4 @@
-import {Form, Link, useSearchParams, useActionData} from 'react-router-dom';
-import { PhotoIcon } from '@heroicons/react/24/solid'
+import {Form, Link, useSearchParams} from 'react-router-dom';
 
 function AuthForm() {
   const [searchParams, setSearchParams] = useSearchParams()

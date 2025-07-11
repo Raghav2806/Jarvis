@@ -58,7 +58,7 @@ export default function EditForm({data}){
                        {method == "bank" ? "Method" : formatTitle(method)} Name
                      </label>
                      {method == "bank" ? (
-                       <Dropdown options={options} selected={selected} setSelected={setSelected}/>
+                       <Dropdown name='bankMethod' options={options} selected={selected} setSelected={setSelected}/>
                      ) : (
                        <div className="mt-2.5">
                          <input

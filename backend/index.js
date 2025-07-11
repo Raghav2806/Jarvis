@@ -4,6 +4,7 @@ import passport from "passport";
 import './config/passportConfig.js';
 import cors from "cors";
 import { router } from "./routes/userRoutes.js";
+import { transactRouter } from "./routes/transactionRoutes.js";
 import * as dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(
 app.use(passport.initialize());
 
 app.use("/", router);
+app.use("/tran", transactRouter);
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;

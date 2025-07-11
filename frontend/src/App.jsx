@@ -17,6 +17,7 @@ import EditMethod, {
 } from "./pages/methodsPages/EditMethod";
 import authLoader from "./util/authLoader";
 import { loaderToken } from "./util/auth";
+import TransactionForm, {action as addTranAction} from "./pages/transactionPages/TransactionForm";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,17 @@ const router = createBrowserRouter([
           }
         ],
       },
+      {
+        path: "transactions",
+        children: [
+          {
+            index: true,
+            element: <TransactionForm/>,
+            loader: authLoader,
+            action: addTranAction
+          }
+        ]
+      }
     ],
   },
 ]);

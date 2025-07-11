@@ -2,13 +2,16 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
-    type: {type: String, enum: ['subscription','expense','income','bill','reminder']}, 
+    type: {type: String, enum: ['Subscription','Expense','Income','Bill','Reminder']}, 
     title: {type: String},
-    amount: {type: Number},
-    frequency: {type: String, enum: ['once','monthly','yearly']},
+    amount: {
+        value:{type: Number},
+        currency:{type:String}
+    },
+    frequency: {type: String, enum: ['Once','Monthly','Yearly']},
     date: { type: Date, default: new Date() },
     category: {type: String, 
-        enum: ['entertainment','software subscription', 'groceries', 'rent', 'transport', 'fuel', 'medical', 'dining', 'shopping', 'travel', 'education', 'salary', 'miscellaneous', 'uncategorized'],
+        enum: ['Entertainment','Software Subscription', 'Groceries', 'Rent', 'Transport', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Miscellaneous', 'Uncategorized'],
         default: 'uncategorized'
     },
 

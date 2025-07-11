@@ -7,6 +7,10 @@ export async function findUserByEmail (email) {
     return await userModel.findOne({email: email});
 };
 
+export async function findUserById (id) {
+    return await userModel.findById(id);
+};
+
 export async function findUserByGoogleId (id) {
     return await userModel.findOne({googleId: id});
 };

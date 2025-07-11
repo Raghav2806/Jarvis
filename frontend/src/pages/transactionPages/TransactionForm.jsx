@@ -30,9 +30,11 @@ export async function action({request}) {
         date: data.get('date'),
         category: data.get('category'),
         method: data.get('method'),
-        methodId: data.get('id')
-    }
-
+        methodId: data.get('id'),
+        duration: data.get('duration')
+    }    
+    console.log(transactionData);
+    
     const response = await fetch("http://localhost:3000/tran/add", {
         method: "POST",
         headers: {
@@ -51,5 +53,5 @@ export async function action({request}) {
           status: response.status,
         });
       }
-      return redirect("/manage");
+      return redirect("/dashboard");
 }

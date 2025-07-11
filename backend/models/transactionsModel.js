@@ -8,7 +8,7 @@ const transactionSchema = new mongoose.Schema({
         value:{type: Number},
         currency:{type:String}
     },
-    frequency: {type: String, enum: ['Once','Monthly','Yearly']},
+    frequency: {type: String, enum: ['Once','Daily','Weekly','Monthly','Yearly']},
     date: { type: Date, default: new Date() },
     category: {type: String, 
         enum: ['Entertainment','Software Subscription', 'Groceries', 'Rent', 'Transport', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Miscellaneous', 'Uncategorized'],
@@ -21,7 +21,8 @@ const transactionSchema = new mongoose.Schema({
     },
     notes: {type: String},
     isRecurring: {type: Boolean},
-    nextDueDate: { type: Date}
+    nextDueDate: { type: Date},
+    lastDate: {type: Date}
 });
 
 const transactionModel = mongoose.model("transaction", transactionSchema);

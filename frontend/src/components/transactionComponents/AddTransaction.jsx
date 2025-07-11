@@ -9,7 +9,9 @@ export default function AddTransaction({ user }) {
   const [selectedCategory, setSelectedCategory] = useState("Uncategorized");
   const [method, setMethod] = useState("cash");
   const [id, setId] = useState("");
-  const methodOptions = ["cash", "upi", "card","bank"];
+  const [hasEndDate, setHasEndDate] = useState(false);
+  const [endDuration, setEndDuration] = useState("");
+  const methodOptions = ["cash", "upi", "card", "bank"];
   const categories = [
     "Entertainment",
     "Software Subscription",
@@ -26,16 +28,23 @@ export default function AddTransaction({ user }) {
     "Miscellaneous",
     "Uncategorized",
   ];
-  const freqOptions = ["Once", "Monthly", "Yearly"];
+  const freqOptions = ["Once", "Daily", "Weekly", "Monthly", "Yearly"];
+  const durationOptions= ["Week","Month","Year"]
   const typeOptions = ["Subscription", "Expense", "Income", "Bill", "Reminder"];
   function handleChange(e) {
     setId(e.target.value);
+  }
+  function handleToggle() {
+    setHasEndDate(!hasEndDate);
   }
   useEffect(() => {
     if (method == "cash") {
       setId("");
     }
-  }, [method]);
+    if(!hasEndDate) {
+      setEndDuration("")
+    }
+  }, [method, hasEndDate]);
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-1/2">
@@ -142,6 +151,7 @@ export default function AddTransaction({ user }) {
                       name="date"
                       id="date"
                       className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                      required
                     />
                   </div>
                 </div>
@@ -257,6 +267,47 @@ export default function AddTransaction({ user }) {
                     Write a note for additional information.
                   </p>
                 </div>
+                {type=="Subscription"?<div className="col-span-full">
+                  <div className="flex gap-x-4 sm:col-span-2">
+                    <div className="flex h-6 items-center">
+                      <div className="group relative inline-flex w-8 shrink-0 rounded-full bg-gray-200 p-px inset-ring inset-ring-gray-900/5 outline-offset-2 outline-indigo-600 transition-colors duration-200 ease-in-out has-checked:bg-indigo-600 has-focus-visible:outline-2">
+                        <span className="size-4 rounded-full bg-white shadow-xs ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-checked:translate-x-3.5" />
+                        <input
+                          id="hasEndDate"
+                          name="hasEndDate"
+                          type="checkbox"
+                          aria-label="Agree to policies"
+                          className="absolute inset-0 appearance-none focus:outline-hidden"
+                          onChange={handleToggle}
+                        />
+                      </div>
+                    </div>
+                    <label
+                      htmlFor="hasEndDate"
+                      className="text-sm/6 text-gray-600"
+                    >
+                      Does this subscription have an end date?
+                    </label>
+                  </div>
+                </div>:<></>}
+                {hasEndDate?
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="street-address"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    When will the subscription end?
+                  </label>
+                  <div className="mt-2">
+                    <Dropdown
+                      name="duration"
+                      options={durationOptions}
+                      selected={endDuration}
+                      setSelected={setEndDuration}
+                    />
+                  </div>
+                </div>
+                :<></>}
               </div>
             </div>
           </div>

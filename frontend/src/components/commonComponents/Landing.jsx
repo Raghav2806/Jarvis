@@ -14,10 +14,10 @@ import {
 } from '@heroicons/react/20/solid'
 
 const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'Product', href: '/auth?mode=register' },
+  { name: 'Features', href: '/auth?mode=register' },
+  { name: 'Marketplace', href: '/auth?mode=register' },
+  { name: 'Company', href: '/auth?mode=register' },
 ]
 const features = [
   {
@@ -55,7 +55,7 @@ const tiers = [
   {
     name: 'Free',
     id: 'tier-free',
-    href: '#',
+    href: '/auth?mode=register',
     priceMonthly: '$0',
     description: 'Everything you need to start tracking your subscriptions and expenses.',
     features: [
@@ -70,7 +70,7 @@ const tiers = [
   {
     name: 'Pro',
     id: 'tier-pro',
-    href: '#',
+    href: '/auth?mode=register',
     priceMonthly: '$4.99',
     description: 'Extra power and flexibility for managing complex or recurring finances.',
     features: [
@@ -118,27 +118,27 @@ const faqs = [
 ]
 const footerNavigation = {
   solutions: [
-    { name: 'Marketing', href: '#' },
-    { name: 'Analytics', href: '#' },
-    { name: 'Automation', href: '#' },
-    { name: 'Commerce', href: '#' },
-    { name: 'Insights', href: '#' },
+    { name: 'Marketing', href: '/auth?mode=register' },
+    { name: 'Analytics', href: '/auth?mode=register' },
+    { name: 'Automation', href: '/auth?mode=register' },
+    { name: 'Commerce', href: '/auth?mode=register' },
+    { name: 'Insights', href: '/auth?mode=register' },
   ],
   support: [
-    { name: 'Submit ticket', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
+    { name: 'Submit ticket', href: '/auth?mode=register' },
+    { name: 'Documentation', href: '/auth?mode=register' },
+    { name: 'Guides', href: '/auth?mode=register' },
   ],
   company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Press', href: '#' },
+    { name: 'About', href: '/auth?mode=register' },
+    { name: 'Blog', href: '/auth?mode=register' },
+    { name: 'Jobs', href: '/auth?mode=register' },
+    { name: 'Press', href: '/auth?mode=register' },
   ],
   legal: [
-    { name: 'Terms of service', href: '#' },
-    { name: 'Privacy policy', href: '#' },
-    { name: 'License', href: '#' },
+    { name: 'Terms of service', href: '/auth?mode=register' },
+    { name: 'Privacy policy', href: '/auth?mode=register' },
+    { name: 'License', href: '/auth?mode=register' },
   ],
 }
 
@@ -155,7 +155,7 @@ export default function Landing() {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/auth?mode=register" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
                 alt=""
@@ -260,7 +260,7 @@ export default function Landing() {
               <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                 <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
                   Announcing our next round of funding.{' '}
-                  <a href="#" className="font-semibold text-white">
+                  <a href="/auth?mode=register" className="font-semibold text-white">
                     <span aria-hidden="true" className="absolute inset-0" />
                     Read more <span aria-hidden="true">&rarr;</span>
                   </a>
@@ -280,7 +280,7 @@ export default function Landing() {
                   >
                     Get started
                   </a>
-                  <a href="#" className="text-sm/6 font-semibold text-white">
+                  <a href="/auth?mode=register" className="text-sm/6 font-semibold text-white">
                     Learn more <span aria-hidden="true">→</span>
                   </a>
                 </div>
@@ -353,20 +353,7 @@ export default function Landing() {
               </p>
             </div>
           </div>
-          <div className="relative overflow-hidden pt-16">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <img
-                alt="App screenshot"
-                src="https://tailwindcss.com/plus-assets/img/component-images/project-app-screenshot.png"
-                width={2432}
-                height={1442}
-                className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
-              />
-              <div aria-hidden="true" className="relative">
-                <div className="absolute -inset-x-20 bottom-0 bg-linear-to-t from-white pt-[7%]" />
-              </div>
-            </div>
-          </div>
+          
           <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
             <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base/7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
               {features.map((feature) => (

@@ -11,7 +11,7 @@ export default function AddTransaction({ user }) {
   const [id, setId] = useState("");
   const [hasEndDate, setHasEndDate] = useState(false);
   const [endDuration, setEndDuration] = useState("");
-  const methodOptions = ["cash", "upi", "card", "bank"];
+  const methodOptions = ["cash"];
   const categories = [
     "Entertainment",
     "Software Subscription",
@@ -31,6 +31,15 @@ export default function AddTransaction({ user }) {
   const freqOptions = ["Once", "Daily", "Weekly", "Monthly", "Yearly"];
   const durationOptions= ["Week","Month","Year"]
   const typeOptions = ["Subscription", "Expense", "Income"];
+  if(user.upiIds.length) {
+    methodOptions.push('upi')
+  }
+  if(user.creditCards.length) {
+    methodOptions.push('card')
+  }
+  if(user.bankAccounts.length) {
+    methodOptions.push('bank')
+  }
   function handleChange(e) {
     setId(e.target.value);
   }
@@ -131,8 +140,9 @@ export default function AddTransaction({ user }) {
                       <input
                         id="amount"
                         name="amount"
-                        type="text"
+                        type="number"
                         placeholder=""
+                        required
                         className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                       />
                     </div>
@@ -171,7 +181,7 @@ export default function AddTransaction({ user }) {
                         className={`text-sm px-3 py-2 rounded-full border ${
                           selectedCategory === category
                             ? "bg-indigo-600 text-white border-indigo-600"
-                            : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                            : "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
                         }`}
                       >
                         {category}
@@ -247,6 +257,11 @@ export default function AddTransaction({ user }) {
                     </div>
                   </div>
                 )}
+                <div className="col-span-full">
+                  <a href="/manage" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    Add Payment Method
+                  </a>
+                </div>
                 <div className="col-span-full">
                   <label
                     htmlFor="notes"

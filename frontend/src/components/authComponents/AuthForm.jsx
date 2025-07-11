@@ -80,15 +80,15 @@ function AuthForm() {
 
               <div className="flex items-center justify-between">
                 <div className="flex gap-3">
-                  <Link to={`?mode=${isLogin ? 'register' : 'login'}`} className="block text-sm/6 text-gray-900 hover:text-indigo-600">
-                    {isLogin ? 'Sign Up' : 'Login'}
-                  </Link>
+                  <p className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    
+                  </p>
                 </div>
 
                 <div className="text-sm/6">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
-                  </a>
+                  <Link to={`?mode=${isLogin ? 'register' : 'login'}`} className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    {isLogin ? 'first time?' : 'No, not my first time?'}
+                  </Link>
                 </div>
               </div>
               <div>

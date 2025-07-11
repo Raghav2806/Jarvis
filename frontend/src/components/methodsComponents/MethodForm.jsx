@@ -4,7 +4,7 @@ import Dropdown from "../commonComponents/Dropdown";
 
 export default function MethodForm() {
   const options = ["Netbanking", "Cheque", "ECS", "NEFT/RTGS/IMPS", "Other"];
-  const [selected, setSelected]=useState('');
+  const [selected, setSelected] = useState("");
   const { method } = useParams();
   function formatTitle(method) {
     if (method == "upi") return "UPI";
@@ -29,13 +29,19 @@ export default function MethodForm() {
                 {method == "bank" ? "Method" : formatTitle(method)} Name
               </label>
               {method == "bank" ? (
-                <Dropdown name='bankMethod' options={options} selected={selected} setSelected={setSelected}/>
+                <Dropdown
+                  name="bankMethod"
+                  options={options}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
               ) : (
                 <div className="mt-2.5">
                   <input
                     name="name"
                     type="text"
                     placeholder={method == "card" ? "HDFC Regalia" : "GPay"}
+                    required
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
@@ -66,6 +72,9 @@ export default function MethodForm() {
                       ? "ICICI Bank"
                       : "yourname@okhdfcbank"
                   }
+                  maxLength={method == "card" ? 4 : null}
+                  minLength={method == "card" ? 4 : null}
+                  required={method !== 'upi'}
                   className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 />
               </div>

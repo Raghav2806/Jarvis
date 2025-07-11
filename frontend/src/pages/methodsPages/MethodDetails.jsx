@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, redirect } from "react-router-dom";
 import authLoader from "../../util/authLoader.js";
 import NavBar from "../../components/commonComponents/NavBar.jsx";
 import CardTable from "../../components/methodsComponents/CardTable.jsx";
@@ -23,3 +23,32 @@ export default function MethodDetails() {
   );
 }
 
+export async function action({request}) {
+  const userData = await authLoader();
+    const data = await request.formData();
+    const deleteData = {
+      email: userData.user.email,
+      id: data.get("id"),
+    };
+    console.log(deleteData);
+    
+    const response = await fetch("http://localhost:3000/deletemethod/", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(deleteData),
+    });
+  
+    if (response.status === 422 || response.status === 401) {
+      return response;
+    }
+  
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Response(JSON.stringify({ message: data.message }), {
+        status: response.status,
+      });
+    }
+    return redirect("/manage");
+}

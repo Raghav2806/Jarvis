@@ -118,3 +118,22 @@ export async function updateUpi (cardData) {
         throw new Error("Can't find upi");
     }
 }
+
+export async function deleteAnyMethod(user,id) {
+    const result=await getMethodFromId(user,id);
+    if(!result) {
+        throw new Error("Cound not find method to delete")
+    }
+    const {method} =result;
+    
+    if(method === 'card'){
+        user.creditCards=user.creditCards.filter(card => card._id.toString()!==id)
+    } else if(method === 'bank'){
+        user.bankAccounts=user.bankAccounts.filter(bank => bank._id.toString()!==id)
+    } else if(method === 'upi'){
+        user.upiIds=user.upiIds.filter(upi => upi._id.toString()!==id)
+    } else {
+        throw new Error("Unknown payment method")
+    }
+    await user.save()
+}

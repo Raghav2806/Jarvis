@@ -7,7 +7,7 @@ import AuthenticationPage, {
 import Success from "./pages/authPages/Success";
 import LandingPage from "./pages/commonPages/LandingPage";
 import Dashboard from "./pages/Dashboard";
-import MethodDetails from "./pages/methodsPages/MethodDetails";
+import MethodDetails, {action as deleteAction} from "./pages/methodsPages/MethodDetails";
 import PaymentForm, {
   action as pformAction,
 } from "./pages/methodsPages/PaymentForm";
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
             index: true,
             element: <MethodDetails />,
             loader: authLoader,
+            action: deleteAction
           },
           {
             path: ":method",

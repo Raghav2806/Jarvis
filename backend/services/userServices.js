@@ -6,11 +6,12 @@ import {
   searchUpi, 
   addingUpi, 
   searchBank, 
-  addingBank, 
-  getMethodFromId,
+  addingBank,
   updateCard,
   updateBank,
-  updateUpi
+  updateUpi,
+  deleteAnyMethod,
+  getMethodFromId
 } from "../repositries/userRepo.js"
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -128,5 +129,18 @@ export async function updateMethodDetails(newData) {
     }
   } catch(err) {
     throw err
+  }
+}
+
+export async function deleteMethodDetails(email,id) {
+  try {
+    const existingUser = await findUserByEmail(email);
+    if(existingUser) {
+      return await deleteAnyMethod(existingUser,id)
+    } else {
+      throw new Error("User not Found")
+    }
+  } catch (err) {
+    throw err;
   }
 }

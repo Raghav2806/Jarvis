@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, Form} from 'react-router-dom'
 
 export default function BankTable({banks}) {
     const len=banks.length;
@@ -16,7 +16,7 @@ export default function BankTable({banks}) {
             to="bank"
             className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Add bank
+            Add Bank
           </Link>
         </div>
       </div>
@@ -57,6 +57,14 @@ export default function BankTable({banks}) {
                         <Link to={`edit/${bank._id}`} className="text-indigo-600 hover:text-indigo-900">
                           Edit<span className="sr-only">, {bank.bankName}</span>
                         </Link>
+                      </td>
+                      <td className="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6">
+                      <Form method="POST">
+                        <input name='id' hidden={true} value={bank._id}/>
+                        <button type='submit' className="text-red-600 hover:text-red-900">
+                          Delete<span className="sr-only">, {bank.name}</span>
+                        </button>
+                        </Form>
                       </td>
                     </tr>
                   ))}

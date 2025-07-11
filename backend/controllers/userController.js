@@ -5,7 +5,8 @@ import {
     addUpi,
     addBank,
     getMethodDetails,
-    updateMethodDetails
+    updateMethodDetails,
+    deleteMethodDetails
 } from "../services/userServices.js";
 import { ApiError } from "../errors/ApiError.js";
 import * as dotenv from "dotenv";
@@ -77,6 +78,17 @@ export async function editMethod(req, res, next) {
     res
       .status(201)
       .json({ message: 'Method updated.'});
+  } catch (err) {
+    next(ApiError.badRequest(err.message));
+  }
+}
+
+export async function deleteMethod(req, res, next) {
+  try {
+    await deleteMethodDetails(req.body.email,req.body.id)
+    res
+      .status(201)
+      .json({message:'Method deleted'});
   } catch (err) {
     next(ApiError.badRequest(err.message));
   }

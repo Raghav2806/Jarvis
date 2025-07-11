@@ -32,9 +32,7 @@ export async function action({request}) {
         method: data.get('method'),
         methodId: data.get('id'),
         duration: data.get('duration')
-    }    
-    console.log(transactionData);
-    
+    }
     const response = await fetch("http://localhost:3000/tran/add", {
         method: "POST",
         headers: {

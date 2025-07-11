@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-router-dom";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Dropdown from "../commonComponents/Dropdown";
 
 export default function AddTransaction({ user }) {
@@ -30,7 +30,7 @@ export default function AddTransaction({ user }) {
   ];
   const freqOptions = ["Once", "Daily", "Weekly", "Monthly", "Yearly"];
   const durationOptions= ["Week","Month","Year"]
-  const typeOptions = ["Subscription", "Expense", "Income", "Bill", "Reminder"];
+  const typeOptions = ["Subscription", "Expense", "Income"];
   function handleChange(e) {
     setId(e.target.value);
   }
@@ -184,7 +184,7 @@ export default function AddTransaction({ user }) {
                     value={selectedCategory}
                   />
                 </div>
-                <div className="sm:col-span-3">
+                {type=='Income'?<></>:<div className="sm:col-span-3">
                   <label
                     htmlFor="street-address"
                     className="block text-sm/6 font-medium text-gray-900"
@@ -199,7 +199,7 @@ export default function AddTransaction({ user }) {
                       setSelected={setMethod}
                     />
                   </div>
-                </div>
+                </div>}
                 {method == "cash" ? (
                   <></>
                 ) : (

@@ -8,13 +8,15 @@ export async function addingTransaction(tranData) {
         if(!user) {
             throw new Error("Could not find user")
         }
-        if(tranData.method != 'cash') {
+        if(tranData.type != 'Income') {
+            if(tranData.method != 'cash') {
             const mode = await getMethodFromId(user,tranData.methodId)
             if(!mode) {
                 throw new Error("Cannot find method details")
             }
         } else if(tranData.methodId){
             throw new Error("Cash cannot have method id")
+        }
         }
         await createTransaction(tranData);
     } catch(err) {

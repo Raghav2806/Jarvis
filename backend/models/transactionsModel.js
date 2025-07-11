@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
-    type: {type: String, enum: ['Subscription','Expense','Income','Bill','Reminder']}, 
+    type: {type: String, enum: ['Subscription','Expense','Income']}, 
     title: {type: String},
     amount: {
         value:{type: Number},
@@ -16,7 +16,7 @@ const transactionSchema = new mongoose.Schema({
     },
 
     paymentMethod: {
-        methodType: {type: String, enum: ['credit-card', 'netbanking', 'upi', 'cash']},
+        methodType: {type: String, enum: ['card', 'bank', 'upi', 'cash']},
         sourceId: { type: mongoose.Schema.Types.ObjectId },
     },
     notes: {type: String},

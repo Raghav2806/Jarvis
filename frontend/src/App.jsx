@@ -6,7 +6,7 @@ import AuthenticationPage, {
 } from "./pages/authPages/Authentication";
 import Success from "./pages/authPages/Success";
 import LandingPage from "./pages/commonPages/LandingPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard, {loader as dashLoader} from "./pages/Dashboard";
 import MethodDetails, {action as deleteAction} from "./pages/methodsPages/MethodDetails";
 import PaymentForm, {
   action as pformAction,
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       { path: "auth", element: <AuthenticationPage />, action: authAction },
       { path: "auth-success", element: <Success /> },
-      { path: "dashboard", element: <Dashboard />, loader: authLoader },
+      { path: "dashboard", element: <Dashboard />, loader: dashLoader },
       {
         path: "manage",
         children: [

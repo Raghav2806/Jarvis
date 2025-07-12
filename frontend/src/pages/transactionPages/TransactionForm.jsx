@@ -31,7 +31,7 @@ export async function action({request}) {
         category: data.get('category'),
         method: data.get('method'),
         methodId: data.get('id'),
-        duration: data.get('duration')
+        lastDate: data.get('lastDate')
     }
     const response = await fetch("http://localhost:3000/tran/add", {
         method: "POST",

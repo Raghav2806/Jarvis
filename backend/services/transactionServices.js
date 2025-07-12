@@ -1,4 +1,4 @@
-import {createTransaction} from "../repositries/transactionRepo.js"
+import {createTransaction, getStatsByUserId} from "../repositries/transactionRepo.js"
 import { findUserById, getMethodFromId } from "../repositries/userRepo.js";
 
 export async function addingTransaction(tranData) {
@@ -20,6 +20,18 @@ export async function addingTransaction(tranData) {
         }
         await createTransaction(tranData);
     } catch(err) {
+        throw err;
+    }
+}
+
+export async function getDashboardData(userId) {
+    try {
+        const user=await findUserById(userId);
+        if(!user) {
+            throw new Error("Incorrect Id, Cannot find User.")
+        }
+        return await getStatsByUserId(user._id);
+    } catch (err) {
         throw err;
     }
 }

@@ -8,11 +8,11 @@ const transactionSchema = new mongoose.Schema({
         value:{type: Number},
         currency:{type:String}
     },
-    frequency: {type: String, enum: ['Once','Daily','Weekly','Monthly','Yearly']},
+    frequency: {type: String, enum: ['Once','Monthly','Yearly']},
     date: { type: Date, default: new Date() },
     category: {type: String, 
-        enum: ['Entertainment','Software Subscription', 'Groceries', 'Rent', 'Transport', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Miscellaneous', 'Uncategorized'],
-        default: 'uncategorized'
+        enum: ['Entertainment', 'Groceries', 'Rent', 'Transport', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Miscellaneous', 'Uncategorized'],
+        default: 'Uncategorized'
     },
 
     paymentMethod: {

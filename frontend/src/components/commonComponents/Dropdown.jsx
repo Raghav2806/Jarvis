@@ -1,7 +1,10 @@
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
-export default function Dropdown({name, options, selected, setSelected}) {
+export default function Dropdown({name, options, selected, setSelected, onChange}) {
     function handleChange(e){
         setSelected(e.target.value);
+        if(onChange){
+          onChange(e);
+        }
     }
     function formatTitle(method) {
         if (method == "upi") return "UPI";

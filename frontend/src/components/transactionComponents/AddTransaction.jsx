@@ -30,7 +30,7 @@ export default function AddTransaction({ user }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState("");
-  function validateDates(start, end, freq) {
+  function validateEndDate(start, end, frequency) {
     if (!start || !end) return;
 
     const startObj = new Date(start);
@@ -59,6 +59,31 @@ export default function AddTransaction({ user }) {
       setError("");
     }
   }
+
+  function validateStartDate(start, frequency) {
+    if (!start) return;
+
+    const startObj = new Date(start);
+    const today= new Date();
+    let minStartDate;
+
+    if (frequency === "Monthly") {
+      minStartDate= new Date(today);
+      minStartDate.setMonth(minStartDate.getMonth() - 1);
+    } else if (frequency === "Yearly") {
+      minStartDate= new Date(today);
+      minStartDate.setFullYear(minStartDate.getMonth() - 1);
+    } 
+
+    if(startObj < minStartDate) {
+      setError(
+        `Start date must be within the range of a ${frequency.slice(0,-2).toLowerCase()} from today`
+      )
+    } else {
+      setError("");
+    }
+  }
+  
   if (user.upiIds.length) {
     methodOptions.push("upi");
   }
@@ -118,6 +143,10 @@ export default function AddTransaction({ user }) {
                       options={freqOptions}
                       selected={frequency}
                       setSelected={setFrequency}
+                      onChange={(e) => {
+                        validateStartDate(startDate, e.target.value);
+                        validateEndDate(startDate, endDate, e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -179,7 +208,7 @@ export default function AddTransaction({ user }) {
                     htmlFor="date"
                     className="block text-sm/6 font-semibold text-gray-900"
                   >
-                    Date
+                    Last Billed On
                   </label>
                   <div className="mt-2">
                     <input
@@ -191,9 +220,11 @@ export default function AddTransaction({ user }) {
                       required
                       onChange={(e) => {
                         setStartDate(e.target.value);
-                        validateDates(e.target.value, endDate, frequency);
+                        validateStartDate(e.target.value, frequency);
+                        validateEndDate(e.target.value, endDate, frequency);
                       }}
                     />
+                    {error && <p className="text-red-600">{error}</p>}
                   </div>
                 </div>
                 <div className="col-span-full">
@@ -320,7 +351,7 @@ export default function AddTransaction({ user }) {
                     Write a note for additional information.
                   </p>
                 </div>
-                {type == "Subscription" ? (
+                {frequency != "Once" ? (
                   <div className="col-span-full">
                     <div className="flex gap-x-4 sm:col-span-2">
                       <div className="flex h-6 items-center">
@@ -347,7 +378,7 @@ export default function AddTransaction({ user }) {
                 ) : (
                   <></>
                 )}
-                {hasEndDate ? (
+                {hasEndDate && frequency!="Once" ? (
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="date"
@@ -365,7 +396,9 @@ export default function AddTransaction({ user }) {
                         required
                         onChange={(e) => {
                           setEndDate(e.target.value);
-                          validateDates(startDate, e.target.value, frequency);
+                          validateStartDate(startDate, frequency);
+                          validateEndDate(startDate, e.target.value, frequency);
+                          
                         }}
                       />
                       {error && <p className="text-red-600">{error}</p>}

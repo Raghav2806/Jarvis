@@ -29,7 +29,8 @@ export default function AddTransaction({ user }) {
   const typeOptions = ["Subscription", "Expense", "Income"];
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [error, setError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [startDateError, setStartDateError] = useState("");
   function validateEndDate(start, end, frequency) {
     if (!start || !end) return;
 
@@ -49,14 +50,14 @@ export default function AddTransaction({ user }) {
 
     if (endObj < minEndDate) {
       if(frequency === "Once") {
-        setError("Last date must be after the start date")
+        setEndDateError("Last date must be after the start date")
       } else {
-        setError(
+        setEndDateError(
           `Last date must be at least 1 ${frequency.slice(0,-2).toLowerCase()} after start date`
         );
       }
     } else {
-      setError("");
+      setEndDateError("");
     }
   }
 
@@ -72,15 +73,15 @@ export default function AddTransaction({ user }) {
       minStartDate.setMonth(minStartDate.getMonth() - 1);
     } else if (frequency === "Yearly") {
       minStartDate= new Date(today);
-      minStartDate.setFullYear(minStartDate.getMonth() - 1);
+      minStartDate.setFullYear(minStartDate.getFullYear() - 1);
     } 
 
     if(startObj < minStartDate) {
-      setError(
+      setStartDateError(
         `Start date must be within the range of a ${frequency.slice(0,-2).toLowerCase()} from today`
       )
     } else {
-      setError("");
+      setStartDateError("");
     }
   }
   
@@ -224,7 +225,7 @@ export default function AddTransaction({ user }) {
                         validateEndDate(e.target.value, endDate, frequency);
                       }}
                     />
-                    {error && <p className="text-red-600">{error}</p>}
+                    {startDateError && <p className="text-red-600">{startDateError}</p>}
                   </div>
                 </div>
                 <div className="col-span-full">
@@ -401,7 +402,7 @@ export default function AddTransaction({ user }) {
                           
                         }}
                       />
-                      {error && <p className="text-red-600">{error}</p>}
+                      {endDateError && <p className="text-red-600">{endDateError}</p>}
                     </div>
                   </div>
                 ) : (
@@ -418,7 +419,7 @@ export default function AddTransaction({ user }) {
             >
               Cancel
             </a>
-            {!error && <button
+            {!(endDateError || startDateError) && <button
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

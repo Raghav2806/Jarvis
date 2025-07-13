@@ -11,7 +11,7 @@ const transactionSchema = new mongoose.Schema({
     frequency: {type: String, enum: ['Once','Monthly','Yearly']},
     date: { type: Date, default: new Date() },
     category: {type: String, 
-        enum: ['Entertainment', 'Groceries', 'Rent', 'Transport', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Miscellaneous', 'Uncategorized'],
+        enum: ['Entertainment', 'Groceries', 'Rent', 'Investment', 'Fuel', 'Medical', 'Dining', 'Shopping', 'Travel', 'Education', 'Salary', 'Electronics', 'Gambling', 'Mobile Recharge', 'Miscellaneous', 'Uncategorized'],
         default: 'Uncategorized'
     },
 

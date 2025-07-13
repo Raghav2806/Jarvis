@@ -15,7 +15,8 @@ export default function AddTransaction({ user }) {
     "Entertainment",
     "Groceries",
     "Rent",
-    "Transport",
+    "Electronics",
+    "Investment",
     "Fuel",
     "Medical",
     "Dining",
@@ -23,6 +24,8 @@ export default function AddTransaction({ user }) {
     "Travel",
     "Education",
     "Salary",
+    "Mobile Recharge",
+    "Gambling",
     "Miscellaneous",
   ];
   const freqOptions = ["Once", "Monthly", "Yearly"];
@@ -99,6 +102,9 @@ export default function AddTransaction({ user }) {
   }
   function handleToggle() {
     setHasEndDate(!hasEndDate);
+    if(!hasEndDate) {
+      setEndDate(null)
+    }
   }
   useEffect(() => {
     if (method == "cash") {
@@ -209,7 +215,7 @@ export default function AddTransaction({ user }) {
                     htmlFor="date"
                     className="block text-sm/6 font-semibold text-gray-900"
                   >
-                    Last Billed On
+                    {frequency=="Once"?'':'Last'} Billed On
                   </label>
                   <div className="mt-2">
                     <input
@@ -324,14 +330,14 @@ export default function AddTransaction({ user }) {
                     </div>
                   </div>
                 )}
-                <div className="col-span-full">
+                {type == "Income"?<></>:<div className="col-span-full">
                   <a
                     href="/manage"
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Add Payment Method
                   </a>
-                </div>
+                </div>}
                 <div className="col-span-full">
                   <label
                     htmlFor="notes"
@@ -419,7 +425,7 @@ export default function AddTransaction({ user }) {
             >
               Cancel
             </a>
-            {!(endDateError || startDateError) && <button
+            {!(startDateError||hasEndDate?endDateError:null ) && <button
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

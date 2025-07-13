@@ -1,13 +1,18 @@
 import transactionModel from "../models/transactionsModel.js";
 import cron from "node-cron";
 
+function utcDate(date) {
+  const utc = new Date(date);
+  utc.setUTCHours(0, 0, 0, 0);
+  return utc;
+}
+
 export async function calculateNextDueDate(frequency, date, lastDate) {
   if (frequency === "Once") {
     return null;
   }
-  const baseDate = new Date(date);
-  baseDate.setHours(0, 0, 0, 0);
-  const nextDate = new Date(baseDate);
+  const baseDate = utcDate(date);
+  const nextDate = utcDate(baseDate);
   switch (frequency) {
     case "Monthly":
       nextDate.setMonth(nextDate.getMonth() + 1);
@@ -40,10 +45,11 @@ export async function createTransaction(tranData) {
   if (frequency !== "Once") {
     isRecurring = true;
   }
-  const baseDate = new Date(date);
-  baseDate.setHours(0, 0, 0, 0);
-  const baseLastDate = new Date(lastDate);
-  baseLastDate.setHours(0, 0, 0, 0);
+  const baseDate = utcDate(date);
+  let baseLastDate = null;
+  if (lastDate) {
+    baseLastDate = utcDate(lastDate);
+  }
   const nextDate = await calculateNextDueDate(frequency, date);
   await transactionModel.create({
     userId: userId,
@@ -68,26 +74,121 @@ export async function getStatsByUserId(id) {
 
   const nextYear = new Date(
     now.getFullYear() + 1,
-    now.getMonth() + 1,
+    now.getMonth(),
     now.getDate()
   );
   const pipeline = [
     { $match: { userId: id } },
     {
       $facet: {
-        totalIncome: [
-          { $match: { type: "Income" } },
-          { $group: { _id: null, total: { $sum: "$amount.value" } } },
+        thisMonthIncomeRecieved: [
+          {
+            $match: {
+              type: "Income",
+              date: { $gte: firstOfTheMonth, $lte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
         ],
-        totalExpense: [
-          { $match: { type: "Expense" } },
-          { $group: { _id: null, total: { $sum: "$amount.value" } } },
+        thisMonthIncomeDue: [
+          {
+            $match: {
+              type: "Income",
+              nextDueDate: { $lt: firstOfNextMonth, $gte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
         ],
-        categoryBreakdown: [
+        futureThisMonthIncomeDue: [
+          {
+            $match: {
+              type: "Income",
+              date: { $lt: firstOfNextMonth, $gte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
+        ],
+        monthIncomeBreakdown: [
+          {
+            $match: {
+              type: "Income",
+              date: { $gte: firstOfTheMonth, $lt: firstOfNextMonth },
+            },
+          },
           { $group: { _id: "$category", total: { $sum: "$amount.value" } } },
-          { $sort: { total: -1 } },
+          { $sort: {total: -1}}
+        ],
+        thisMonthExpensePaid: [
+          {
+            $match: {
+              type: "Expense",
+              date: { $gte: firstOfTheMonth, $lte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
+        ],
+        thisMonthExpenseDue: [
+          {
+            $match: {
+              type: "Expense",
+              nextDueDate: { $lt: firstOfNextMonth, $gte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
+        ],
+        futureThisMonthExpenseDue: [
+          {
+            $match: {
+              type: "Expense",
+              date: { $lt: firstOfNextMonth, $gte: now },
+            },
+          },
+          {
+            $group: {
+              _id: "$amount.currency",
+              total: { $sum: "$amount.value" },
+            },
+          },
+        ],
+        monthExpenseBreakdown: [
+          {
+            $match: {
+              type: "Expense",
+              date: { $gte: firstOfTheMonth, $lt: firstOfNextMonth },
+            },
+          },
+          { $group: { _id: "$category", total: { $sum: "$amount.value" } } },
+          { $sort: {total: -1}}
         ],
         paymentMethodBreakdown: [
+          {
+            $match: {"paymentMethod.methodType":{$ne:null}}
+          },
           {
             $group: {
               _id: "$paymentMethod.methodType",
@@ -96,33 +197,35 @@ export async function getStatsByUserId(id) {
           },
           { $sort: { total: -1 } },
         ],
-        thisMonthExpensePaid: [
-          { $match: { type: "Expense", date: { $gte: firstOfTheMonth } } },
-          { $group: { _id: "$title", total: { $sum: "$amount.value" } } },
-        ],
-        thisMonthExpenseDue: [
+        monthlySubscriptionsPaid: [
           {
             $match: {
-              type: "Expense",
-              nextDueDate: { $lte: firstOfNextMonth },
+              type: "Subscription",
+              date: { $gte: firstOfTheMonth, $lte: now },
             },
           },
-          { $group: { _id: "$title", total: { $sum: "$amount.value" } } },
-        ],
-        recentTransaction: [{ $sort: { data: -1 } }, { $limit: 5 }],
-        monthlySubscriptionsPaid: [
-          { $match: { type: "Subscription", date: { $gte: firstOfTheMonth } } },
-          { $group: { _id: "$title", total: { $sum: "$amount.value" } } },
+          {
+            $group: {
+              _id: "$amount.currency",
+              amount: { $sum: "$amount.value" },
+            },
+          },
         ],
         monthlySubscriptionsDue: [
           {
             $match: {
               type: "Subscription",
-              nextDueDate: { $lte: firstOfNextMonth },
+              nextDueDate: { $lt: firstOfNextMonth, $gte: now },
             },
           },
-          { $group: { _id: "$title", total: { $sum: "$amount.value" } } },
+          {
+            $group: {
+              _id: "$title",
+              amount: { $sum: "$amount.value" }, //return next due date also
+            },
+          },
         ],
+        recentTransaction: [{ $sort: { data: -1 } }, { $limit: 5 }],
       },
     },
   ];
@@ -133,10 +236,9 @@ export async function getStatsByUserId(id) {
 cron.schedule("0 0 * * *", async () => {
   //minute hour date month day
   try {
-    const todayMidnight = new Date();
-    todayMidnight.setHours(0, 0, 0, 0);
+    const todayMidnight = utcDate();
 
-    const tomorrowMidnight = new Date(todayMidnight);
+    const tomorrowMidnight = utcDate(todayMidnight);
     tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
 
     const transactionsToUpdate = await transactionModel.find({
@@ -150,8 +252,13 @@ cron.schedule("0 0 * * *", async () => {
       ) {
         transaction.nextDueDate = null;
       } else {
-        transaction.nextDueDate = await calculateNextDueDate(transaction.frequency, transaction.date);
-        if(transaction.nextDueDate?.getTime() >= transaction.lastDate?.getTime()) {
+        transaction.nextDueDate = await calculateNextDueDate(
+          transaction.frequency,
+          transaction.date
+        );
+        if (
+          transaction.nextDueDate?.getTime() >= transaction.lastDate?.getTime()
+        ) {
           transaction.nextDueDate = null;
         }
       }

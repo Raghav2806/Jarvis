@@ -50,5 +50,5 @@ export async function action({request}) {
   const expiration = new Date();
   expiration.setHours(expiration.getHours() + 1);
   localStorage.setItem('expiration', expiration.toISOString())
-  return redirect('/dashboard') 
+  return redirect('/manage') 
 }

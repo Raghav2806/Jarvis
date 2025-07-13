@@ -14,7 +14,7 @@ function AuthSuccess() {
       expiration.setHours(expiration.getHours() + 1);
       localStorage.setItem("expiration", expiration.toISOString());
 
-      navigate("/dashboard");
+      navigate("/manage");
     } else {
       navigate("/");
     }

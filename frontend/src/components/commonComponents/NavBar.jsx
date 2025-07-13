@@ -7,7 +7,6 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard'},
   { name: 'Add Transaction', href: '/transactions'},
   { name: 'Manage Payment Methods', href: '/manage'},
-  { name: 'Calendar', href: '#'},
 ]
 const userNavigation = [
   { name: 'Sign out'},

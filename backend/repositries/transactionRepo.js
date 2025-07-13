@@ -71,12 +71,8 @@ export async function getStatsByUserId(id) {
   const now = new Date();
   const firstOfTheMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const firstOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-
-  const nextYear = new Date(
-    now.getFullYear() + 1,
-    now.getMonth(),
-    now.getDate()
-  );
+  const soon= new Date(now.getFullYear(), now.getMonth(), now.getDate()+10);
+  
   const pipeline = [
     { $match: { userId: id } },
     {
@@ -86,34 +82,6 @@ export async function getStatsByUserId(id) {
             $match: {
               type: "Income",
               date: { $gte: firstOfTheMonth, $lte: now },
-            },
-          },
-          {
-            $group: {
-              _id: "$amount.currency",
-              total: { $sum: "$amount.value" },
-            },
-          },
-        ],
-        thisMonthIncomeDue: [
-          {
-            $match: {
-              type: "Income",
-              nextDueDate: { $lt: firstOfNextMonth, $gte: now },
-            },
-          },
-          {
-            $group: {
-              _id: "$amount.currency",
-              total: { $sum: "$amount.value" },
-            },
-          },
-        ],
-        futureThisMonthIncomeDue: [
-          {
-            $match: {
-              type: "Income",
-              date: { $lt: firstOfNextMonth, $gte: now },
             },
           },
           {
@@ -147,34 +115,6 @@ export async function getStatsByUserId(id) {
             },
           },
         ],
-        thisMonthExpenseDue: [
-          {
-            $match: {
-              type: "Expense",
-              nextDueDate: { $lt: firstOfNextMonth, $gte: now },
-            },
-          },
-          {
-            $group: {
-              _id: "$amount.currency",
-              total: { $sum: "$amount.value" },
-            },
-          },
-        ],
-        futureThisMonthExpenseDue: [
-          {
-            $match: {
-              type: "Expense",
-              date: { $lt: firstOfNextMonth, $gte: now },
-            },
-          },
-          {
-            $group: {
-              _id: "$amount.currency",
-              total: { $sum: "$amount.value" },
-            },
-          },
-        ],
         monthExpenseBreakdown: [
           {
             $match: {
@@ -197,35 +137,95 @@ export async function getStatsByUserId(id) {
           },
           { $sort: { total: -1 } },
         ],
-        monthlySubscriptionsPaid: [
+        subscriptionsDueDetails: [
           {
             $match: {
               type: "Subscription",
-              date: { $gte: firstOfTheMonth, $lte: now },
+              $or: [
+              {nextDueDate: { $lt: firstOfNextMonth, $gte: now }},
+              {date: {$lt: firstOfNextMonth, $gte: now}}
+              ]
             },
           },
           {
-            $group: {
-              _id: "$amount.currency",
-              amount: { $sum: "$amount.value" },
-            },
-          },
+            $sort: {
+              nextDueDate: 1
+            }
+          }
+          ,
+          {
+            $limit: 3
+          }
         ],
-        monthlySubscriptionsDue: [
+        expenseDueDetails: [
           {
             $match: {
-              type: "Subscription",
+              type: "Expense",
+              nextDueDate: { $lt: firstOfNextMonth, $gte: now }, 
+            },
+          },
+          {
+            $sort: {
+              nextDueDate: 1
+            }
+          },
+          {
+            $limit: 3
+          }
+        ],
+        futureExpense: [
+          {
+            $match: {
+              type: "Expense",
+              date: { $lt: soon, $gte: now },
+              
+            },
+          },
+          {
+            $sort: {
+              date: 1
+            }
+          },
+          {
+            $limit: 3
+          }
+        ],
+        incomeDueDetails: [
+          {
+            $match: {
+              type: "Income",
               nextDueDate: { $lt: firstOfNextMonth, $gte: now },
-            },
+            }
           },
           {
-            $group: {
-              _id: "$title",
-              amount: { $sum: "$amount.value" }, //return next due date also
-            },
+            $sort: {
+              nextDueDate: 1,
+            }
           },
+          {
+            $limit: 3
+          }
         ],
-        recentTransaction: [{ $sort: { data: -1 } }, { $limit: 5 }],
+        futureIncome: [
+          {
+            $match: {
+              type: "Income",
+              date: { $lt: soon, $gte: now },
+            }
+          },
+          {
+            $sort: {
+              date: 1,
+            }
+          },
+          {
+            $limit: 3
+          }
+        ],
+        totalNumberOfTransactions: [
+          {$group : {_id: null, total: {$sum: 1}}}
+        ],
+        recentTransaction: [{$match: {date: {$lte: now}}},{ $sort: { date: -1 } }, { $limit: 10 }],
       },
     },
   ];

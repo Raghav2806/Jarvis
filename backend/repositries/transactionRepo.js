@@ -1,13 +1,20 @@
 import transactionModel from "../models/transactionsModel.js";
 import cron from "node-cron";
+import nodemailer from "nodemailer";
+import { findUserById } from "./userRepo.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-function utcDate(date) {
+export function utcDate(date = new Date()) {
   const utc = new Date(date);
+  if (isNaN(utc)) {
+    throw new Error(`Invalid date passed to utcDate(): ${date}`);
+  }
   utc.setUTCHours(0, 0, 0, 0);
   return utc;
 }
 
-export async function calculateNextDueDate(frequency, date, lastDate) {
+export async function calculateNextDueDate(frequency, date) {
   if (frequency === "Once") {
     return null;
   }
@@ -233,7 +240,7 @@ export async function getStatsByUserId(id) {
   return result[0];
 }
 
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   //minute hour date month day
   try {
     const todayMidnight = utcDate();
@@ -244,22 +251,24 @@ cron.schedule("0 0 * * *", async () => {
     const transactionsToUpdate = await transactionModel.find({
       nextDueDate: { "$gte": todayMidnight, "$lt": tomorrowMidnight },
     });
-
+    
     for (const transaction of transactionsToUpdate) {
       transaction.date = transaction.nextDueDate;
       if (
         transaction.nextDueDate?.getTime() >= transaction.lastDate?.getTime()
       ) {
         transaction.nextDueDate = null;
+        transaction.lastDate = null;
       } else {
         transaction.nextDueDate = await calculateNextDueDate(
           transaction.frequency,
           transaction.date
         );
         if (
-          transaction.nextDueDate?.getTime() >= transaction.lastDate?.getTime()
+          transaction.nextDueDate?.getTime() > transaction.lastDate?.getTime()
         ) {
           transaction.nextDueDate = null;
+          transaction.lastDate = null;
         }
       }
       await transaction.save();
@@ -268,3 +277,68 @@ cron.schedule("0 0 * * *", async () => {
     throw err;
   }
 });
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  auth: {
+    user: process.env.USER,
+    pass: process.env.APP_PASSWORD,
+  },
+});
+
+export async function sendEmail(transporter, mailOptions) {
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    throw new Error("Unable to send mail");
+  }
+}
+
+cron.schedule("0 9 * * *", async() => {
+  try {
+    const todayMidnight = utcDate();
+
+    const tomorrowMidnight = utcDate(todayMidnight);
+    tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
+
+    const dayAfterTomorrowMidnight = utcDate(tomorrowMidnight);
+    dayAfterTomorrowMidnight.setDate(dayAfterTomorrowMidnight.getDate() + 1);
+
+    const transactionsToSendEmail = await transactionModel.find({
+        type: {"$ne": "Income"},
+        nextDueDate: { "$gte": tomorrowMidnight, "$lt": dayAfterTomorrowMidnight },
+    });
+    for(const transaction of transactionsToSendEmail) {
+      const {userId}=transaction;
+      const user=await findUserById(userId);
+      
+      if(user) {
+        const date = new Date(transaction.nextDueDate).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",})
+        const reminderOptions= {
+            from: {
+                name: "Jarvis",
+                address: process.env.USER,
+            },
+            to: user.email,
+            subject: "Reminder: Payments coming up",
+            text: 
+            `Hey ${user.name},
+
+            Just a heads-up! You have a payment due:
+
+            • ${transaction.title} - ${transaction.amount.currency} ${transaction.amount.value}
+            • Due on: ${date}
+
+            - Jarvis 🔔
+            `
+        }
+        await sendEmail(transporter, reminderOptions)
+      } else {
+        throw new Error(`User not found for transaction: ${transaction._id}`)
+      }
+    }
+  } catch (err) {
+    throw err;
+  }
+})

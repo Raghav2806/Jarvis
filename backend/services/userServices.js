@@ -22,7 +22,7 @@ export async function registerUser(userData) {
   try {
     const existingUser = await findUserByEmail(userData.email);
     if (existingUser) {
-      throw new Error("User already exists");
+      throw new Error("User with this email already exists");
     } else {
       await createUser(userData);
       return jwt.sign({ email: userData.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -37,7 +37,7 @@ export async function loginUser(userData) {
         const { email, password } = userData;
         const user= await findUserByEmail(email)
         if (!user) {
-          throw new Error("User not found");
+          throw new Error("User not found. Try Signing In.");
         } 
         if (user) {
             const valid= await bcrypt.compare(password, user.password);

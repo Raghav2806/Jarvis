@@ -29,7 +29,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://jarvis-pink-kappa.vercel.app/auth/google/jarvis",
+      callbackURL: "https://jarvis-qynk.onrender.com/auth/google/jarvis",
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {

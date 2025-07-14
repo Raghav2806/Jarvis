@@ -240,7 +240,7 @@ export async function getStatsByUserId(id) {
   return result[0];
 }
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   //minute hour date month day
   try {
     const todayMidnight = utcDate();

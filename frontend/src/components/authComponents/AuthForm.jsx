@@ -112,7 +112,7 @@ function AuthForm() {
 
               <div className="mt-6 grid grid-cols-1">
                 <a
-                  href="http://localhost:3000/auth/google"
+                  href="https://jarvis-qynk.onrender.com/auth/google"
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">

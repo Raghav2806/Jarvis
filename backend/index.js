@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["https://jarvis-pink-kappa.vercel.app"],
     methods: ["POST", "GET", "PATCH", "DELETE"],
     credentials: true,
   })

@@ -13,7 +13,7 @@ router.get('/auth/google/jarvis',
   passport.authenticate('google', { session: false, failureRedirect: '/' }),
   (req, res) => {
     const token = jwt.sign({ email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.redirect(`http://localhost:5173/auth-success?token=${token}`);
+    res.redirect(`https://jarvis-pink-kappa.vercel.app/auth-success?token=${token}`);
   }
 );
 

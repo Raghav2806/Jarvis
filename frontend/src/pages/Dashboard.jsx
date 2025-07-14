@@ -4,7 +4,7 @@ import NavBar from "../components/commonComponents/NavBar.jsx";
 import Wrapper from "../components/commonComponents/Wrapper.jsx";
 import Stats from "../components/dashboardComponents/Stats.jsx";
 import DoughnutChart from "../components/dashboardComponents/DoughnutChart.jsx";
-import CardList from "../components/dashboardComponents/cardList.jsx";
+import CardList from "../components/dashboardComponents/CardList.jsx";
 import TransactionsTable from "../components/dashboardComponents/TransactionsTable.jsx";
 function Dashboard() {
   const data = useLoaderData();

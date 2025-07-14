@@ -34,7 +34,7 @@ export async function action({ request, params }) {
     accountType: data.get("accountType"),
   };
   
-  const response = await fetch("http://localhost:3000/addmethod/" + method, {
+  const response = await fetch("https://jarvis-qynk.onrender.com/addmethod/" + method, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -138,7 +138,7 @@ export default Dashboard;
 export async function loader() {
   const userData = await authLoader();
   const response = await fetch(
-    `http://localhost:3000/tran/data/${userData.user._id}`,
+    `https://jarvis-qynk.onrender.com/tran/data/${userData.user._id}`,
     {
       method: "GET",
       headers: {

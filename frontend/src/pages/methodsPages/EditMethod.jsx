@@ -12,7 +12,7 @@ export default function EditMethod(){
 export async function loader({params}) {
     const id=params.id
     const userData=await authLoader();
-    const response = await fetch(`http://localhost:3000/getmethod/${id}?email=${userData.user.email}`, {
+    const response = await fetch(`https://jarvis-qynk.onrender.com/getmethod/${id}?email=${userData.user.email}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export async function action({request}) {
     accountType: data.get("accountType"),
   }
   
-  const response = await fetch("http://localhost:3000/editmethod", {
+  const response = await fetch("https://jarvis-qynk.onrender.com/editmethod", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

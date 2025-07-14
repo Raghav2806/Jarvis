@@ -7,7 +7,7 @@ export default async function authLoader() {
         return redirect('/');
     }
 
-    const response = await fetch('http://localhost:3000/dashboard', {
+    const response = await fetch('https://jarvis-qynk.onrender.com/dashboard', {
     headers: {
     Authorization: `Bearer ${token}`
     }

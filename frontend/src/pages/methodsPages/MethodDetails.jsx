@@ -32,7 +32,7 @@ export async function action({request}) {
     };
     console.log(deleteData);
     
-    const response = await fetch("http://localhost:3000/deletemethod/", {
+    const response = await fetch("https://jarvis-qynk.onrender.com/deletemethod/", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

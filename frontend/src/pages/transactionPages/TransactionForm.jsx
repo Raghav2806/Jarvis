@@ -1,6 +1,6 @@
 import {useLoaderData, redirect} from "react-router-dom"
 import Wrapper from "../../components/commonComponents/Wrapper";
-import AddTransaction from "../../components/transactionComponents/addTransaction";
+import AddTransaction from "../../components/transactionComponents/AddTransaction";
 import NavBar from "../../components/commonComponents/NavBar"
 import authLoader from "../../util/authLoader";
 export default function TransactionForm(){
@@ -33,7 +33,7 @@ export async function action({request}) {
         methodId: data.get('id'),
         lastDate: data.get('lastDate')
     }
-    const response = await fetch("http://localhost:3000/tran/add", {
+    const response = await fetch("https://jarvis-qynk.onrender.com/tran/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -111,7 +111,7 @@ export async function getStatsByUserId(id) {
         thisMonthExpensePaid: [
           {
             $match: {
-              type: "Expense",
+              type: { $ne: "Income"},
               date: { $gte: firstOfTheMonth, $lte: now },
             },
           },
@@ -125,7 +125,7 @@ export async function getStatsByUserId(id) {
         monthExpenseBreakdown: [
           {
             $match: {
-              type: "Expense",
+              type: { $ne: "Income"},
               date: { $gte: firstOfTheMonth, $lt: firstOfNextMonth },
             },
           },
@@ -159,10 +159,6 @@ export async function getStatsByUserId(id) {
               nextDueDate: 1
             }
           }
-          ,
-          {
-            $limit: 3
-          }
         ],
         expenseDueDetails: [
           {
@@ -175,9 +171,6 @@ export async function getStatsByUserId(id) {
             $sort: {
               nextDueDate: 1
             }
-          },
-          {
-            $limit: 3
           }
         ],
         futureExpense: [
@@ -192,9 +185,6 @@ export async function getStatsByUserId(id) {
             $sort: {
               date: 1
             }
-          },
-          {
-            $limit: 3
           }
         ],
         incomeDueDetails: [
@@ -208,9 +198,6 @@ export async function getStatsByUserId(id) {
             $sort: {
               nextDueDate: 1,
             }
-          },
-          {
-            $limit: 3
           }
         ],
         futureIncome: [
@@ -224,9 +211,6 @@ export async function getStatsByUserId(id) {
             $sort: {
               date: 1,
             }
-          },
-          {
-            $limit: 3
           }
         ],
         totalNumberOfTransactions: [
@@ -306,15 +290,22 @@ cron.schedule("0 9 * * *", async() => {
     dayAfterTomorrowMidnight.setDate(dayAfterTomorrowMidnight.getDate() + 1);
 
     const transactionsToSendEmail = await transactionModel.find({
-        type: {"$ne": "Income"},
-        nextDueDate: { "$gte": tomorrowMidnight, "$lt": dayAfterTomorrowMidnight },
+        type: {$ne: "Income"},
+        $or: [
+        {nextDueDate: { $gte: tomorrowMidnight, $lt: dayAfterTomorrowMidnight }},
+        {date: { $gte: tomorrowMidnight, $lt: dayAfterTomorrowMidnight }}
+      ]
     });
     for(const transaction of transactionsToSendEmail) {
       const {userId}=transaction;
       const user=await findUserById(userId);
       
       if(user) {
-        const date = new Date(transaction.nextDueDate).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",})
+        if(transaction.nextDueDate){
+          let date = new Date(transaction.nextDueDate).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
+        } else {
+          let date = new Date(transaction.date).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
+        }
         const reminderOptions= {
             from: {
                 name: "Jarvis",

@@ -61,11 +61,11 @@ function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
             {monthExpenseBreakdown[0]?<DoughnutChart
               data={monthExpenseBreakdown}
-              chartTitle="Expense Breakdown"
+              chartTitle="Expense Breakdown This Month"
             />:<></>}
             {monthIncomeBreakdown[0]?<DoughnutChart
               data={monthIncomeBreakdown}
-              chartTitle="Income Breakdown"
+              chartTitle="Income Breakdown This Month"
             />:<></>}
             {paymentMethodBreakdown[0]?<DoughnutChart
               data={paymentMethodBreakdown}

@@ -34,6 +34,7 @@ export default function AddTransaction({ user }) {
   const [endDate, setEndDate] = useState("");
   const [endDateError, setEndDateError] = useState("");
   const [startDateError, setStartDateError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   function validateEndDate(start, end, frequency) {
     if (!start || !end) return;
 
@@ -427,9 +428,11 @@ export default function AddTransaction({ user }) {
             </a>
             {!(startDateError||hasEndDate?endDateError:null ) && <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={isSubmitting}
+              onClick={() => {setIsSubmitting(true)}}
+              className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Save
+              {isSubmitting? 'Saving...': 'Save'}
             </button>}
           </div>
         </Form>

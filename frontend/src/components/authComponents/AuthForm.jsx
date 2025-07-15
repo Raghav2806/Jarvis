@@ -1,7 +1,9 @@
 import {Form, Link, useSearchParams} from 'react-router-dom';
+import { useState } from 'react';
 
 function AuthForm() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isLogin = searchParams.get('mode') === 'login'
 
   return (
@@ -93,9 +95,11 @@ function AuthForm() {
               </div>
               <div>
                 <button 
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={isSubmitting}
+                     onClick={() => setIsSubmitting(true)}
+                    className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    Save
+                    {isSubmitting? 'Saving': 'Save'}
                 </button>
               </div>
             </Form>

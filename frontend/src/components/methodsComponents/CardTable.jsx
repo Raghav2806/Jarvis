@@ -1,7 +1,9 @@
 import {Link, Form} from 'react-router-dom'
+import { useState } from 'react';
 
 export default function CardTable({cards}) {
   const len=cards.length;
+  const [isSubmitting, setIsSubmitting]=useState(false);
   return (
     <div className="px-4 sm:px-6 lg:px-8 mt-4 mb-4">
       <div className="sm:flex sm:items-center">
@@ -61,8 +63,8 @@ export default function CardTable({cards}) {
                       <td className="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6">
                       <Form method='post'>
                         <input name='id' hidden={true} value={card._id} onChange={() => {}}/>
-                        <button type='submit' className="text-red-600 hover:text-red-900">
-                          Delete<span className="sr-only">, {card.name}</span>
+                        <button type='submit' className={`text-red-600 hover:text-red-900 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isSubmitting} onClick={() => setIsSubmitting(true)}>
+                          {isSubmitting? 'Deleting...': 'Delete'}<span className="sr-only">, {card.name}</span>
                         </button>
                       </Form>
                       </td>

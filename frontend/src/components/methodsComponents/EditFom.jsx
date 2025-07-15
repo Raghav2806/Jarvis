@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { Form } from "react-router-dom";
 import Dropdown from "../commonComponents/Dropdown";
 
-export default function EditForm({data}){
+export default function EditForm({data, isSubmitting}){
     const options = ["Netbanking", "Cheque", "ECS", "NEFT/RTGS/IMPS", "Other"];
     const details=data.detail;
     const [selected, setSelected]=useState('');
-    const [isSubmitting, setIsSubmitting]=useState(false);
     const [formData, setFormData] = useState({
         name: "",
         lastFour: "",
@@ -149,7 +148,6 @@ export default function EditForm({data}){
                  <div className="mt-10">
                    <button
                      disabled={isSubmitting}
-                     onClick={() => setIsSubmitting(true)}
                      className={`block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                      type="submit"
                    >

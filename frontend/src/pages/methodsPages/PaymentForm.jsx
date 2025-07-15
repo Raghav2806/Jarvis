@@ -1,14 +1,16 @@
-import { useLoaderData, redirect } from "react-router-dom";
+import { useLoaderData, redirect, useNavigation } from "react-router-dom";
 import NavBar from "../../components/commonComponents/NavBar.jsx";
 import authLoader from "../../util/authLoader.js";
 import MethodForm from "../../components/methodsComponents/MethodForm.jsx";
 
 export default function PaymentForm() {
   const data = useLoaderData();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   return (
     <>
-      <NavBar user={data.user} />
-      <MethodForm />
+      <NavBar user={data.user}/>
+      <MethodForm isSubmitting={isSubmitting}/>
     </>
   );
 }

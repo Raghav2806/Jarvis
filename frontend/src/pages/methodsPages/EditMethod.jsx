@@ -1,11 +1,13 @@
 import EditForm from "../../components/methodsComponents/EditFom";
 import authLoader from "../../util/authLoader";
-import {useLoaderData, redirect} from 'react-router-dom'
+import {useLoaderData, redirect, useNavigation} from 'react-router-dom'
 
 export default function EditMethod(){
     const data=useLoaderData()
+    const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
     return (
-        <EditForm data={data}/>
+        <EditForm data={data} isSubmitting={isSubmitting}/>
     )
 }
 

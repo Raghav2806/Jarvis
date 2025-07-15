@@ -1,8 +1,10 @@
-import { redirect } from 'react-router-dom';
+import { redirect, useNavigation } from 'react-router-dom';
 import AuthForm from "../../components/authComponents/AuthForm";
 
 function AuthenticationPage() {
-  return <AuthForm />;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+  return <AuthForm isSubmitting={isSubmitting}/>;
 }
 
 export default AuthenticationPage;

@@ -1,4 +1,4 @@
-import { useLoaderData, redirect } from "react-router-dom";
+import { useLoaderData, redirect, useNavigation } from "react-router-dom";
 import authLoader from "../../util/authLoader.js";
 import NavBar from "../../components/commonComponents/NavBar.jsx";
 import CardTable from "../../components/methodsComponents/CardTable.jsx";
@@ -8,16 +8,18 @@ import Wrapper from "../../components/commonComponents/Wrapper.jsx";
 
 export default function MethodDetails() {
   const data = useLoaderData();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   const user=data.user;
   return (
     <>
       <NavBar user={user} />
       <Wrapper title={'Manage Payment Methods'}>
-      <CardTable cards={user.creditCards}/>
+      <CardTable cards={user.creditCards} isSubmitting={isSubmitting}/>
       <hr className="w-5/7 my-6 mx-auto border-t border-indigo-500" />
-      <BankTable banks={user.bankAccounts}/>
+      <BankTable banks={user.bankAccounts} isSubmitting={isSubmitting}/>
       <hr className="w-5/7 my-6 mx-auto border-t border-indigo-500" />
-      <UpiTable upis={user.upiIds}/>
+      <UpiTable upis={user.upiIds} isSubmitting={isSubmitting}/>
       </Wrapper>
     </>
   );

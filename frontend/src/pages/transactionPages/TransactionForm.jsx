@@ -1,4 +1,4 @@
-import {useLoaderData, redirect} from "react-router-dom"
+import {useLoaderData, redirect, useNavigation} from "react-router-dom"
 import Wrapper from "../../components/commonComponents/Wrapper";
 import AddTransaction from "../../components/transactionComponents/AddTransaction";
 import NavBar from "../../components/commonComponents/NavBar"
@@ -6,11 +6,13 @@ import authLoader from "../../util/authLoader";
 export default function TransactionForm(){
     const data=useLoaderData()
     const user=data.user
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === "submitting";
     return (
         <>
             <NavBar user={user}/>
             <Wrapper title={'Add Transaction'}>
-                <AddTransaction user={user}/>
+                <AddTransaction user={user} isSubmitting={isSubmitting}/>
             </Wrapper>
         </>
     )

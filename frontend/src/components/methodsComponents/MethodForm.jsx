@@ -2,10 +2,9 @@ import { useState } from "react";
 import { Form, useParams } from "react-router-dom";
 import Dropdown from "../commonComponents/Dropdown";
 
-export default function MethodForm() {
+export default function MethodForm({isSubmitting}) {
   const options = ["Netbanking", "Cheque", "ECS", "NEFT/RTGS/IMPS", "Other"];
   const [selected, setSelected] = useState("");
-  const [isSubmitting, setIsSubmitting]=useState(false);
   const { method } = useParams();
   function formatTitle(method) {
     if (method == "upi") return "UPI";
@@ -111,7 +110,6 @@ export default function MethodForm() {
           <div className="mt-10">
             <button
               disabled={isSubmitting}
-              onClick={() => setIsSubmitting(true)}
               className={`block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               type="submit"
             >

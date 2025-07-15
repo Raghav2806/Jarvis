@@ -1,7 +1,6 @@
 import {Link, Form} from 'react-router-dom'
-import { useState } from 'react';
-export default function UpiTable({upis}) {
-  const[isSubmitting,setIsSubmitting]=useState(false);
+
+export default function UpiTable({upis, isSubmitting}) {
     const len=upis.length;
   return (
     <div className="px-4 sm:px-6 lg:px-8 mt-4 mb-4">
@@ -58,7 +57,7 @@ export default function UpiTable({upis}) {
                       <td className="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6">
                       <Form method='POST'>
                         <input name='id' hidden={true} value={upi._id} onChange={() => {}}/>
-                        <button type='submit' className={`text-red-600 hover:text-red-900 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isSubmitting} onClick={() => setIsSubmitting(true)}>
+                        <button type='submit' className={`text-red-600 hover:text-red-900 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isSubmitting}>
                           {isSubmitting?'Deleting':'Delete'}<span className="sr-only">, {upi.name}</span>
                         </button>
                       </Form>

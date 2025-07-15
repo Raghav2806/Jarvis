@@ -3,7 +3,7 @@ import { Form } from "react-router-dom";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Dropdown from "../commonComponents/Dropdown";
 
-export default function AddTransaction({ user }) {
+export default function AddTransaction({ user, isSubmitting }) {
   const [frequency, setFrequency] = useState("Once");
   const [type, setType] = useState("Subscription");
   const [selectedCategory, setSelectedCategory] = useState("Uncategorized");
@@ -34,7 +34,6 @@ export default function AddTransaction({ user }) {
   const [endDate, setEndDate] = useState("");
   const [endDateError, setEndDateError] = useState("");
   const [startDateError, setStartDateError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   function validateEndDate(start, end, frequency) {
     if (!start || !end) return;
 
@@ -429,7 +428,6 @@ export default function AddTransaction({ user }) {
             {!(startDateError||hasEndDate?endDateError:null ) && <button
               type="submit"
               disabled={isSubmitting}
-              onClick={() => {setIsSubmitting(true)}}
               className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {isSubmitting? 'Saving...': 'Save'}

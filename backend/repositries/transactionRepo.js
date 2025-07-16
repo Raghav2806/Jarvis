@@ -224,6 +224,7 @@ export async function getStatsByUserId(id) {
   return result[0];
 }
 
+export async function updateDates() {
 cron.schedule("0 0 * * *", async () => {
   //minute hour date month day
   try {
@@ -270,6 +271,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.APP_PASSWORD,
   },
 });
+}
 
 export async function sendEmail(transporter, mailOptions) {
   try {
@@ -279,6 +281,7 @@ export async function sendEmail(transporter, mailOptions) {
   }
 }
 
+export async function sendReminder() {
 cron.schedule("0 9 * * *", async() => {
   try {
     const todayMidnight = utcDate();
@@ -333,3 +336,4 @@ cron.schedule("0 9 * * *", async() => {
     throw err;
   }
 })
+}

@@ -39,3 +39,7 @@ router.get('/getmethod/:id',serv.getMethod)
 router.patch('/editmethod', serv.editMethod)
 
 router.delete('/deletemethod', serv.deleteMethod)
+
+router.get("/ping", (req, res) => {
+  res.status(200).send("OK");
+});

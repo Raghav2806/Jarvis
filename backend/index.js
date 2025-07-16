@@ -5,6 +5,7 @@ import './config/passportConfig.js';
 import cors from "cors";
 import { router } from "./routes/userRoutes.js";
 import { transactRouter } from "./routes/transactionRoutes.js";
+import { sendReminder, updateDates } from "./repositries/transactionRepo.js";
 import * as dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 dotenv.config();
@@ -26,6 +27,9 @@ app.use(passport.initialize());
 
 app.use("/", router);
 app.use("/tran", transactRouter);
+
+updateDates();
+sendReminder();
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;

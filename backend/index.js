@@ -28,8 +28,8 @@ app.use(passport.initialize());
 app.use("/", router);
 app.use("/tran", transactRouter);
 
-updateDates();
-sendReminder();
+await updateDates();
+await sendReminder();
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;

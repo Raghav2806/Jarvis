@@ -225,8 +225,10 @@ export async function getStatsByUserId(id) {
 }
 
 export async function updateDates() {
+  console.log("Setting up daily updateDates cron job...");
 cron.schedule("0 0 * * *", async () => {
   //minute hour date month day
+  console.log("Running updateDates cron at", new Date().toISOString());
   try {
     const todayMidnight = utcDate();
 
@@ -282,7 +284,9 @@ export async function sendEmail(transporter, mailOptions) {
 }
 
 export async function sendReminder() {
+  console.log("Setting up daily sendReminder cron job...");
 cron.schedule("0 9 * * *", async() => {
+  console.log("Running sendReminder cron at", new Date().toISOString());
   try {
     const todayMidnight = utcDate();
 
@@ -304,10 +308,11 @@ cron.schedule("0 9 * * *", async() => {
       const user=await findUserById(userId);
       
       if(user) {
+        let date;
         if(transaction.nextDueDate){
-          let date = new Date(transaction.nextDueDate).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
+          date = new Date(transaction.nextDueDate).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
         } else {
-          let date = new Date(transaction.date).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
+          date = new Date(transaction.date).toLocaleDateString("en-IN", {year: "numeric",month: "short",day: "numeric",});
         }
         const reminderOptions= {
             from: {

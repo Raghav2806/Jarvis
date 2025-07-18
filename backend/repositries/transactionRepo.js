@@ -14,27 +14,35 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export function utcDate(date = new Date()) {
-  const utc = new Date(date);
-  if (isNaN(utc)) {
-    throw new Error(`Invalid date passed to utcDate(): ${date}`);
-  }
-  utc.setUTCHours(0, 0, 0, 0);
-  return utc;
+function getStartOfDayIST(dateInput = new Date()) {
+  const date = new Date(dateInput);
+
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+
+  const parts = formatter.formatToParts(date);
+  const year = parts.find(p => p.type === 'year').value;
+  const month = parts.find(p => p.type === 'month').value;
+  const day = parts.find(p => p.type === 'day').value;
+
+  return new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
 }
 
 export async function calculateNextDueDate(frequency, date) {
   if (frequency === "Once") {
     return null;
   }
-  const baseDate = utcDate(date);
-  const nextDate = utcDate(baseDate);
+  const nextDate = new Date(date.getTime());
   switch (frequency) {
     case "Monthly":
-      nextDate.setMonth(nextDate.getMonth() + 1);
+      nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
       break;
     case "Yearly":
-      nextDate.setFullYear(nextDate.getFullYear() + 1);
+      nextDate.setUTCFullYear(nextDate.getUTCFullYear() + 1);
       break;
     default:
       return null;
@@ -61,12 +69,12 @@ export async function createTransaction(tranData) {
   if (frequency !== "Once") {
     isRecurring = true;
   }
-  const baseDate = utcDate(date);
+  const baseDate = getStartOfDayIST(date);
   let baseLastDate = null;
   if (lastDate) {
-    baseLastDate = utcDate(lastDate);
+    baseLastDate = getStartOfDayIST(lastDate);
   }
-  const nextDate = await calculateNextDueDate(frequency, date);
+  const nextDate = await calculateNextDueDate(frequency, baseDate);
   await transactionModel.create({
     userId: userId,
     title: title,
@@ -84,10 +92,11 @@ export async function createTransaction(tranData) {
 }
 
 export async function getStatsByUserId(id) {
-  const now = new Date();
-  const firstOfTheMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const firstOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  const soon= new Date(now.getFullYear(), now.getMonth(), now.getDate()+10);
+  const now = getStartOfDayIST();
+  const firstOfTheMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const firstOfNextMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+  const soon= new Date(now.getTime());
+  soon.setUTCDate(soon.getUTCDate() + 10);
   
   const pipeline = [
     { $match: { userId: id } },
@@ -239,9 +248,9 @@ cron.schedule("0 0 * * *", async () => {
   //minute hour date month day
   console.log("Running updateDates cron at", new Date().toISOString());
   try {
-    const todayMidnight = utcDate();
+    const todayMidnight = getStartOfDayIST();
 
-    const tomorrowMidnight = utcDate(todayMidnight);
+    const tomorrowMidnight = new Date(todayMidnight);
     tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
 
     const transactionsToUpdate = await transactionModel.find({
@@ -270,8 +279,10 @@ cron.schedule("0 0 * * *", async () => {
       await transaction.save();
     }
   } catch (err) {
-    throw err;
+    console.error("Error in cron job:", err);
   }
+}, {
+  timezone: "Asia/Kolkata"
 });
 }
 
@@ -289,12 +300,12 @@ export async function sendReminder() {
 cron.schedule("0 9 * * *", async() => {
   console.log("Running sendReminder cron at", new Date().toISOString());
   try {
-    const todayMidnight = utcDate();
+    const todayMidnight = getStartOfDayIST();
 
-    const tomorrowMidnight = utcDate(todayMidnight);
+    const tomorrowMidnight = new Date(todayMidnight);
     tomorrowMidnight.setDate(tomorrowMidnight.getDate() + 1);
 
-    const dayAfterTomorrowMidnight = utcDate(tomorrowMidnight);
+    const dayAfterTomorrowMidnight = new Date(tomorrowMidnight);
     dayAfterTomorrowMidnight.setDate(dayAfterTomorrowMidnight.getDate() + 1);
 
     const transactionsToSendEmail = await transactionModel.find({
@@ -339,7 +350,9 @@ cron.schedule("0 9 * * *", async() => {
       }
     }
   } catch (err) {
-    throw err;
+    console.error("Error in cron job:", err);
   }
+}, {
+  timezone: "Asia/Kolkata"
 })
 }

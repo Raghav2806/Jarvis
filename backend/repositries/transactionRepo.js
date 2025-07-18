@@ -5,6 +5,15 @@ import { findUserById } from "./userRepo.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  auth: {
+    user: process.env.USER,
+    pass: process.env.APP_PASSWORD,
+  },
+});
+
 export function utcDate(date = new Date()) {
   const utc = new Date(date);
   if (isNaN(utc)) {
@@ -264,16 +273,8 @@ cron.schedule("0 0 * * *", async () => {
     throw err;
   }
 });
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  auth: {
-    user: process.env.USER,
-    pass: process.env.APP_PASSWORD,
-  },
-});
 }
+
 
 export async function sendEmail(transporter, mailOptions) {
   try {
